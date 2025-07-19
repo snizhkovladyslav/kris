@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Налаштування транспортера для відправки пошти
-    const transporter = nodemailer.createTransporter({
+    const transporter = nodemailer.createTransport({
       service: 'gmail', // або інший сервіс
       auth: {
         user: process.env.EMAIL_USER, // додайте в .env

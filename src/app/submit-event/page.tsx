@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useState } from "react";
@@ -49,7 +47,7 @@ export default function SubmitEventPage() {
       } else {
         setMessage({ type: 'error', text: result.error || 'Виникла помилка при відправці форми' });
       }
-    } catch (error) {
+    } catch {
       setMessage({ type: 'error', text: 'Виникла помилка при відправці форми. Будь ласка, спробуйте ще раз.' });
     } finally {
       setIsSubmitting(false);
@@ -75,8 +73,8 @@ export default function SubmitEventPage() {
         <section className="py-4 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <div className={`p-4 rounded-lg ${message.type === 'success'
-                ? 'bg-green-50 border border-green-200 text-green-800'
-                : 'bg-red-50 border border-red-200 text-red-800'
+              ? 'bg-green-50 border border-green-200 text-green-800'
+              : 'bg-red-50 border border-red-200 text-red-800'
               }`}>
               {message.text}
             </div>
@@ -308,8 +306,8 @@ export default function SubmitEventPage() {
                 type="submit"
                 disabled={isSubmitting}
                 className={`bg-gradient-to-r from-orange-500 to-red-500 text-white px-12 py-4 rounded-full font-semibold text-lg transition-all transform hover:scale-105 ${isSubmitting
-                    ? 'opacity-50 cursor-not-allowed'
-                    : 'hover:from-orange-600 hover:to-red-600'
+                  ? 'opacity-50 cursor-not-allowed'
+                  : 'hover:from-orange-600 hover:to-red-600'
                   }`}
               >
                 {isSubmitting ? 'Відправляємо...' : 'Відправити пропозицію'}
