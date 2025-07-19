@@ -11,18 +11,18 @@ interface Event {
   description: string;
   time: string;
   type: string;
-  status: string;
+  status: 'Активна' | 'Скасована' | 'Майбутня' | 'Завершена';
   color: string;
 }
 
-export default function EventsPage() {
+export default function ArchivePage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState('all');
   const [uniqueTypes, setUniqueTypes] = useState<string[]>([]);
   const [displayedEvents, setDisplayedEvents] = useState<Event[]>([]);
-  const [visibleCount, setVisibleCount] = useState(6);
+  const [visibleCount, setVisibleCount] = useState(9);
 
   useEffect(() => {
     fetchEvents();
@@ -46,11 +46,10 @@ export default function EventsPage() {
 
       if (response.ok) {
         const eventsData = data.events || [];
-        const filteredEvents = eventsData.filter((event: Event) => event.status !== 'Завершена');
-        setEvents(filteredEvents);
+        setEvents(eventsData);
 
         // Отримуємо унікальні типи подій
-        const types = [...new Set(filteredEvents.map((event: Event) => event.type))] as string[];
+        const types = [...new Set(eventsData.map((event: Event) => event.type))] as string[];
         setUniqueTypes(types);
       } else {
         setError(data.error || 'Failed to fetch events');
@@ -64,7 +63,7 @@ export default function EventsPage() {
   };
 
   const loadMoreEvents = () => {
-    setVisibleCount(prev => prev + 6);
+    setVisibleCount(prev => prev + 9);
   };
 
   const getColorClasses = (color: string) => {
@@ -91,18 +90,6 @@ export default function EventsPage() {
     return typeColorMap[type] || 'bg-gray-100 text-gray-700';
   };
 
-  const getButtonColor = (color: string) => {
-    const buttonColorMap: { [key: string]: string } = {
-      orange: 'bg-orange-500 hover:bg-orange-600',
-      green: 'bg-green-500 hover:bg-green-600',
-      blue: 'bg-blue-500 hover:bg-blue-600',
-      purple: 'bg-purple-500 hover:bg-purple-600',
-      yellow: 'bg-yellow-500 hover:bg-yellow-600',
-      red: 'bg-red-500 hover:bg-red-600',
-    };
-    return buttonColorMap[color] || 'bg-orange-500 hover:bg-orange-600';
-  };
-
   const getFilterButtonColor = (filterType: string) => {
     const filterColorMap: { [key: string]: string } = {
       'Зустріч': 'bg-orange-100 text-orange-700',
@@ -116,8 +103,8 @@ export default function EventsPage() {
   };
 
   const filteredEvents = events.filter(event => {
-    // Фільтруємо тільки активні та майбутні події (не показуємо завершені)
-    if (event.status === 'Завершена') return false;
+    // Показуємо тільки завершені події в архіві
+    if (event.status !== 'Завершена') return false;
 
     if (activeFilter === 'all') return true;
     return event.type === activeFilter;
@@ -128,11 +115,11 @@ export default function EventsPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50">
-        <Header currentPage="events" />
+        <Header currentPage="archive" />
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
-            <p className="text-gray-600">Завантаження подій...</p>
+            <p className="text-gray-600">Завантаження архіву...</p>
           </div>
         </div>
         <Footer />
@@ -143,10 +130,10 @@ export default function EventsPage() {
   if (error) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50">
-        <Header currentPage="events" />
+        <Header currentPage="archive" />
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
-            <p className="text-red-600 mb-4">Помилка завантаження подій</p>
+            <p className="text-red-600 mb-4">Помилка завантаження архіву</p>
             <button
               onClick={fetchEvents}
               className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors"
@@ -162,14 +149,14 @@ export default function EventsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50">
-      <Header currentPage="events" />
+      <Header currentPage="archive" />
 
       {/* Hero Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Календар подій</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Архів подій</h2>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Зустрічі з письменниками, творчі вправи, лекції та читацькі клуби
+            Всі минулі події та зустрічі LiterAktiv. Перегляньте історію наших літературних вечорів
           </p>
         </div>
       </section>
@@ -211,7 +198,7 @@ export default function EventsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {displayedEvents.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-600 text-lg">Події не знайдено</p>
+              <p className="text-gray-600 text-lg">Події в архіві не знайдено</p>
             </div>
           ) : (
             <>
@@ -234,9 +221,9 @@ export default function EventsPage() {
                       <p className="text-gray-600 mb-4">{event.description}</p>
                       <div className="flex items-center justify-between">
                         <span className="text-sm text-gray-500">{event.time}</span>
-                        <button className={`text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${getButtonColor(event.color)}`}>
-                          Зареєструватися
-                        </button>
+                        <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                          Завершена
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -262,15 +249,15 @@ export default function EventsPage() {
       {/* Call to Action */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h3 className="text-3xl font-bold text-gray-900 mb-6">Хочете запропонувати свою подію?</h3>
+          <h3 className="text-3xl font-bold text-gray-900 mb-6">Хочете побачити поточні події?</h3>
           <p className="text-lg text-gray-600 mb-8">
-            Ми завжди відкриті до нових ідей та співпраці. Заповніть форму та ми зв&apos;яжемося з вами.
+            Перегляньте майбутні події та зареєструйтесь на найцікавіші для вас
           </p>
           <Link
-            href="/submit-event"
+            href="/events"
             className="inline-block bg-orange-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-600 transition-colors"
           >
-            Запропонувати подію
+            Переглянути поточні події
           </Link>
         </div>
       </section>
