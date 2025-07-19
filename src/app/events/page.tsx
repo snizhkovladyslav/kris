@@ -21,10 +21,22 @@ export default function EventsPage() {
   const [error, setError] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState('all');
   const [uniqueTypes, setUniqueTypes] = useState<string[]>([]);
+  const [displayedEvents, setDisplayedEvents] = useState<Event[]>([]);
+  const [visibleCount, setVisibleCount] = useState(6);
 
   useEffect(() => {
     fetchEvents();
   }, []);
+
+  useEffect(() => {
+    // Оновлюємо відображувані події при зміні фільтра або кількості
+    const filtered = events.filter(event => {
+      if (activeFilter === 'all') return true;
+      return event.type === activeFilter;
+    });
+
+    setDisplayedEvents(filtered.slice(0, visibleCount));
+  }, [events, activeFilter, visibleCount]);
 
   const fetchEvents = async () => {
     try {
@@ -48,6 +60,10 @@ export default function EventsPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const loadMoreEvents = () => {
+    setVisibleCount(prev => prev + 6);
   };
 
   const getColorClasses = (color: string) => {
@@ -102,6 +118,8 @@ export default function EventsPage() {
     if (activeFilter === 'all') return true;
     return event.type === activeFilter;
   });
+
+  const hasMoreEvents = displayedEvents.length < filteredEvents.length;
 
   if (loading) {
     return (
@@ -159,7 +177,7 @@ export default function EventsPage() {
             {/* Кнопка "Всі події" завжди присутня */}
             <button
               onClick={() => setActiveFilter('all')}
-              className={`px-6 py-2 rounded-full font-semibold transition-colors ${activeFilter === 'all'
+              className={`cursor-pointer px-6 py-2 rounded-full font-semibold transition-colors ${activeFilter === 'all'
                 ? 'bg-orange-500 text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-orange-100 hover:text-orange-700'
                 }`}
@@ -172,7 +190,7 @@ export default function EventsPage() {
               <button
                 key={type}
                 onClick={() => setActiveFilter(type)}
-                className={`px-6 py-2 rounded-full font-semibold transition-colors ${activeFilter === type
+                className={`cursor-pointer px-6 py-2 rounded-full font-semibold transition-colors ${activeFilter === type
                   ? 'bg-orange-500 text-white'
                   : `${getFilterButtonColor(type)} hover:bg-orange-100 hover:text-orange-700`
                   }`}
@@ -187,46 +205,53 @@ export default function EventsPage() {
       {/* Events Grid */}
       <section className="py-16 bg-gradient-to-br from-orange-50 to-red-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {filteredEvents.length === 0 ? (
+          {displayedEvents.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-gray-600 text-lg">Події не знайдено</p>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredEvents.map((event, index) => (
-                <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                  <div className={`h-48 bg-gradient-to-br ${getColorClasses(event.color)} flex items-center justify-center`}>
-                    <span className="text-white text-4xl font-bold">
-                      {event.date}
-                    </span>
-                  </div>
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-sm text-gray-600 font-medium">{event.date}</span>
-                      <span className={`text-xs px-2 py-1 rounded-full ${getTypeColor(event.type)}`}>
-                        {event.type}
+            <>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {displayedEvents.map((event, index) => (
+                  <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <div className={`h-48 bg-gradient-to-br ${getColorClasses(event.color)} flex items-center justify-center`}>
+                      <span className="text-white text-4xl font-bold">
+                        {event.date}
                       </span>
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">{event.title}</h3>
-                    <p className="text-gray-600 mb-4">{event.description}</p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-500">{event.time}</span>
-                      <button className={`text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${getButtonColor(event.color)}`}>
-                        Зареєструватися
-                      </button>
+                    <div className="p-6">
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-sm text-gray-600 font-medium">{event.date}</span>
+                        <span className={`text-xs px-2 py-1 rounded-full ${getTypeColor(event.type)}`}>
+                          {event.type}
+                        </span>
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">{event.title}</h3>
+                      <p className="text-gray-600 mb-4">{event.description}</p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-500">{event.time}</span>
+                        <button className={`text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${getButtonColor(event.color)}`}>
+                          Зареєструватися
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
 
-          {/* Load More Button */}
-          <div className="text-center mt-12">
-            <button className="bg-orange-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-600 transition-colors">
-              Завантажити більше подій
-            </button>
-          </div>
+              {/* Load More Button */}
+              {hasMoreEvents && (
+                <div className="text-center mt-12">
+                  <button
+                    onClick={loadMoreEvents}
+                    className="cursor-pointer bg-orange-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-600 transition-colors"
+                  >
+                    Завантажити більше подій ({filteredEvents.length - displayedEvents.length} залишилося)
+                  </button>
+                </div>
+              )}
+            </>
+          )}
         </div>
       </section>
 
