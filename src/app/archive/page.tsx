@@ -46,10 +46,12 @@ export default function ArchivePage() {
 
       if (response.ok) {
         const eventsData = data.events || [];
-        setEvents(eventsData);
+        // Фільтруємо тільки завершені події для архіву
+        const completedEvents = eventsData.filter((event: Event) => event.status === 'Завершена');
+        setEvents(completedEvents);
 
-        // Отримуємо унікальні типи подій
-        const types = [...new Set(eventsData.map((event: Event) => event.type))] as string[];
+        // Отримуємо унікальні типи подій тільки з завершених подій
+        const types = [...new Set(completedEvents.map((event: Event) => event.type))] as string[];
         setUniqueTypes(types);
       } else {
         setError(data.error || 'Failed to fetch events');
@@ -103,9 +105,6 @@ export default function ArchivePage() {
   };
 
   const filteredEvents = events.filter(event => {
-    // Показуємо тільки завершені події в архіві
-    if (event.status !== 'Завершена') return false;
-
     if (activeFilter === 'all') return true;
     return event.type === activeFilter;
   });
@@ -173,7 +172,7 @@ export default function ArchivePage() {
                 : 'bg-gray-100 text-gray-700 hover:bg-orange-100 hover:text-orange-700'
                 }`}
             >
-              Всі події ({events.length})
+              Всі завершені події ({events.length})
             </button>
 
             {/* Динамічні кнопки фільтрів на основі типів з таблиці */}
