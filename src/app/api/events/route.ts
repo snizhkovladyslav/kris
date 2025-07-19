@@ -23,10 +23,10 @@ export async function GET() {
       );
     }
 
-    // Отримуємо дані з таблиці
+    // Отримуємо дані з таблиці "events"
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId,
-      range: 'A2:G', // Від рядка 2 до кінця, колонки A-G
+      range: 'events!A2:G', // Від рядка 2 до кінця, колонки A-G
     });
 
     const rows = response.data.values || [];
