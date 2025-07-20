@@ -5,53 +5,14 @@ import Footer from "@/components/Footer";
 import { useState } from "react";
 
 export default function SubmitEventPage() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setMessage(null);
-
-    try {
-      const formData = new FormData(e.currentTarget);
-      const data = {
-        eventTitle: formData.get('eventTitle'),
-        eventType: formData.get('eventType'),
-        eventDate: formData.get('eventDate'),
-        eventTime: formData.get('eventTime'),
-        eventDescription: formData.get('eventDescription'),
-        contactName: formData.get('contactName'),
-        contactEmail: formData.get('contactEmail'),
-        contactPhone: formData.get('contactPhone'),
-        organization: formData.get('organization'),
-        venue: formData.get('venue'),
-        maxParticipants: formData.get('maxParticipants'),
-        requirements: formData.get('requirements'),
-        additionalInfo: formData.get('additionalInfo')
-      };
-
-      const response = await fetch('/api/submit-event', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        setMessage({ type: 'success', text: result.message });
-        e.currentTarget.reset();
-      } else {
-        setMessage({ type: 'error', text: result.error || 'Виникла помилка при відправці форми' });
-      }
-    } catch {
-      setMessage({ type: 'error', text: 'Виникла помилка при відправці форми. Будь ласка, спробуйте ще раз.' });
-    } finally {
-      setIsSubmitting(false);
-    }
+  const handleGoogleFormRedirect = () => {
+    setIsRedirecting(true);
+    // Google Form URL - замініть на ваш реальний URL
+    const googleFormUrl = "https://forms.gle/vUZ6X3wVHKkUWYcr5";
+    window.open(googleFormUrl, '_blank');
+    setIsRedirecting(false);
   };
 
   return (
@@ -68,280 +29,129 @@ export default function SubmitEventPage() {
         </div>
       </section>
 
-      {/* Message Display */}
-      {message && (
-        <section className="py-4 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <div className={`p-4 rounded-lg ${message.type === 'success'
-              ? 'bg-green-50 border border-green-200 text-green-800'
-              : 'bg-red-50 border border-red-200 text-red-800'
-              }`}>
-              {message.text}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Form Section */}
+      {/* Google Form Section */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Event Details */}
-            <div className="bg-gradient-to-br from-orange-50 to-red-50 p-8 rounded-xl">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Деталі події</h3>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="eventTitle" className="block text-sm font-medium text-gray-700 mb-2">
-                    Назва події *
-                  </label>
-                  <input
-                    type="text"
-                    id="eventTitle"
-                    name="eventTitle"
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                    placeholder="Введіть назву події"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="eventType" className="block text-sm font-medium text-gray-700 mb-2">
-                    Тип події *
-                  </label>
-                  <select
-                    id="eventType"
-                    name="eventType"
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                  >
-                    <option value="">Оберіть тип події</option>
-                    <option value="meeting">Зустріч з письменником</option>
-                    <option value="workshop">Творча вправа</option>
-                    <option value="lecture">Лекція</option>
-                    <option value="reading-club">Читацький клуб</option>
-                    <option value="open-mic">Вільний мікрофон</option>
-                    <option value="other">Інше</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="eventDate" className="block text-sm font-medium text-gray-700 mb-2">
-                    Дата події *
-                  </label>
-                  <input
-                    type="date"
-                    id="eventDate"
-                    name="eventDate"
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="eventTime" className="block text-sm font-medium text-gray-700 mb-2">
-                    Час події *
-                  </label>
-                  <input
-                    type="time"
-                    id="eventTime"
-                    name="eventTime"
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                  />
-                </div>
-
-                <div className="md:col-span-2">
-                  <label htmlFor="eventDescription" className="block text-sm font-medium text-gray-700 mb-2">
-                    Опис події *
-                  </label>
-                  <textarea
-                    id="eventDescription"
-                    name="eventDescription"
-                    rows={4}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                    placeholder="Детально опишіть вашу подію, її формат та очікувані результати"
-                  ></textarea>
-                </div>
+          <div className="bg-gradient-to-br from-orange-50 to-red-50 p-8 rounded-xl text-center">
+            <div className="mb-8">
+              <div className="w-20 h-20 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
               </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Форма запропонування події</h3>
+              <p className="text-gray-600 mb-6">
+                Для запропонування події використовується Google Forms. Це забезпечує надійність та зручність.
+              </p>
             </div>
 
-            {/* Contact Information */}
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-xl">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Контактна інформація</h3>
+            <div className="space-y-6">
+              <div className="bg-white p-6 rounded-lg shadow-sm">
+                <h4 className="text-lg font-semibold text-gray-900 mb-4">Що потрібно підготувати:</h4>
+                <ul className="text-left space-y-2 text-gray-600">
+                  <li className="flex items-start">
+                    <span className="text-orange-500 mr-2">•</span>
+                    Назва та опис події
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-orange-500 mr-2">•</span>
+                    Дата та час проведення
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-orange-500 mr-2">•</span>
+                    Ваша контактна інформація
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-orange-500 mr-2">•</span>
+                    Додаткова інформація (місце, вимоги, тощо)
+                  </li>
+                </ul>
+              </div>
 
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="contactName" className="block text-sm font-medium text-gray-700 mb-2">
-                    Ваше ім&apos;я *
-                  </label>
-                  <input
-                    type="text"
-                    id="contactName"
-                    name="contactName"
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Введіть ваше ім'я"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="contactEmail" className="block text-sm font-medium text-gray-700 mb-2">
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    id="contactEmail"
-                    name="contactEmail"
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="your@email.com"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="contactPhone" className="block text-sm font-medium text-gray-700 mb-2">
-                    Телефон
-                  </label>
-                  <input
-                    type="tel"
-                    id="contactPhone"
-                    name="contactPhone"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="+43 XXX XXX XXX"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="organization" className="block text-sm font-medium text-gray-700 mb-2">
-                    Організація (якщо є)
-                  </label>
-                  <input
-                    type="text"
-                    id="organization"
-                    name="organization"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Назва організації"
-                  />
+              <div className="bg-blue-50 p-6 rounded-lg">
+                <h4 className="text-lg font-semibold text-gray-900 mb-4">Переваги Google Forms:</h4>
+                <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-600">
+                  <div className="flex items-center">
+                    <svg className="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Автоматичне збереження відповідей
+                  </div>
+                  <div className="flex items-center">
+                    <svg className="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Можливість продовжити пізніше
+                  </div>
+                  <div className="flex items-center">
+                    <svg className="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Надійна доставка повідомлень
+                  </div>
+                  <div className="flex items-center">
+                    <svg className="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Можливість додати файли
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Additional Information */}
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-8 rounded-xl">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">Додаткова інформація</h3>
-
-              <div className="space-y-6">
-                <div>
-                  <label htmlFor="venue" className="block text-sm font-medium text-gray-700 mb-2">
-                    Місце проведення
-                  </label>
-                  <input
-                    type="text"
-                    id="venue"
-                    name="venue"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    placeholder="Адреса або назва місця проведення"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="maxParticipants" className="block text-sm font-medium text-gray-700 mb-2">
-                    Максимальна кількість учасників
-                  </label>
-                  <input
-                    type="number"
-                    id="maxParticipants"
-                    name="maxParticipants"
-                    min="1"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    placeholder="20"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="requirements" className="block text-sm font-medium text-gray-700 mb-2">
-                    Спеціальні вимоги або побажання
-                  </label>
-                  <textarea
-                    id="requirements"
-                    name="requirements"
-                    rows={3}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    placeholder="Опишіть будь-які спеціальні вимоги, обладнання або підготовку"
-                  ></textarea>
-                </div>
-
-                <div>
-                  <label htmlFor="additionalInfo" className="block text-sm font-medium text-gray-700 mb-2">
-                    Додаткова інформація
-                  </label>
-                  <textarea
-                    id="additionalInfo"
-                    name="additionalInfo"
-                    rows={3}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    placeholder="Будь-яка додаткова інформація, яка може бути корисною"
-                  ></textarea>
-                </div>
-
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="partnership"
-                    name="partnership"
-                    className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="partnership" className="ml-2 block text-sm text-gray-700">
-                    Це партнерська подія (спільна організація)
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            {/* Submit Button */}
-            <div className="text-center">
               <button
-                type="submit"
-                disabled={isSubmitting}
-                className={`bg-gradient-to-r from-orange-500 to-red-500 text-white px-12 py-4 rounded-full font-semibold text-lg transition-all transform hover:scale-105 ${isSubmitting
-                  ? 'opacity-50 cursor-not-allowed'
-                  : 'hover:from-orange-600 hover:to-red-600'
-                  }`}
+                onClick={handleGoogleFormRedirect}
+                disabled={isRedirecting}
+                className="w-full bg-orange-500 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
               >
-                {isSubmitting ? 'Відправляємо...' : 'Відправити пропозицію'}
+                {isRedirecting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
+                    Відкриття форми...
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    Відкрити форму запропонування події
+                  </>
+                )}
               </button>
-            </div>
-          </form>
-        </div>
-      </section>
 
-      {/* Info Section */}
-      <section className="py-16 bg-gradient-to-br from-orange-50 to-red-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6">Що відбувається далі?</h3>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-xl shadow-sm">
-              <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white font-bold text-xl">1</span>
-              </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Розгляд пропозиції</h4>
-              <p className="text-gray-600 text-sm">Ми розглянемо вашу пропозицію протягом 3-5 днів</p>
+              <p className="text-sm text-gray-500">
+                Форма відкриється в новому вікні. Після заповнення ви отримаєте підтвердження на email.
+              </p>
             </div>
-            <div className="bg-white p-6 rounded-xl shadow-sm">
-              <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white font-bold text-xl">2</span>
+          </div>
+
+          {/* Alternative Contact */}
+          <div className="mt-8 bg-gray-50 p-6 rounded-xl text-center">
+            <h4 className="text-lg font-semibold text-gray-900 mb-4">Альтернативні способи зв&apos;язку</h4>
+            <div className="grid md:grid-cols-2 gap-4 text-sm">
+              <div className="flex items-center justify-center">
+                <svg className="w-5 h-5 text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <a
+                  href="mailto:info@literaktiv.at"
+                  className="text-gray-600 hover:text-orange-600 transition-colors"
+                >
+                  info@literaktiv.at
+                </a>
               </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Зворотній зв&apos;язок</h4>
-              <p className="text-gray-600 text-sm">Ми зв&apos;яжемося з вами для обговорення деталей</p>
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-sm">
-              <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white font-bold text-xl">3</span>
+              <div className="flex items-center justify-center">
+                <svg className="w-5 h-5 text-gray-500 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                </svg>
+                <a
+                  href="https://www.facebook.com/groups/literaktiv"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 hover:text-orange-600 transition-colors"
+                >
+                  Facebook група
+                </a>
               </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Планування події</h4>
-              <p className="text-gray-600 text-sm">Разом плануємо та організовуємо подію</p>
             </div>
           </div>
         </div>

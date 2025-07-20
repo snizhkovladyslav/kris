@@ -55,7 +55,12 @@ export default function Footer() {
           <div>
             <h4 className="text-xl font-bold mb-4">Контакти</h4>
             <p className="text-gray-300 mb-2">Відень, Австрія</p>
-            <p className="text-gray-300">info@literaktiv.at</p>
+            <a
+              href="mailto:info@literaktiv.at"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              info@literaktiv.at
+            </a>
           </div>
         </div>
 
