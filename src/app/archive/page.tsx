@@ -13,6 +13,7 @@ interface Event {
   type: string;
   status: 'Активна' | 'Скасована' | 'Майбутня' | 'Завершена';
   color: string;
+  image: string;
 }
 
 export default function ArchivePage() {
@@ -204,10 +205,24 @@ export default function ArchivePage() {
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {displayedEvents.map((event, index) => (
                   <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                    <div className={`h-48 bg-gradient-to-br ${getColorClasses(event.color)} flex items-center justify-center`}>
-                      <span className="text-white text-4xl font-bold">
-                        {event.date}
-                      </span>
+                    <div className="h-48 bg-gray-200 overflow-hidden">
+                      {event.image ? (
+                        <img
+                          src={event.image}
+                          alt={event.title}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = 'none';
+                            target.nextElementSibling?.classList.remove('hidden');
+                          }}
+                        />
+                      ) : null}
+                      <div className={`h-full bg-gradient-to-br ${getColorClasses(event.color)} flex items-center justify-center ${event.image ? 'hidden' : ''}`}>
+                        <span className="text-white text-4xl font-bold">
+                          {event.date}
+                        </span>
+                      </div>
                     </div>
                     <div className="p-6">
                       <div className="flex items-center justify-between mb-3">

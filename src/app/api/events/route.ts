@@ -26,7 +26,7 @@ export async function GET() {
     // Отримуємо дані з таблиці "events"
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId,
-      range: 'events!A2:G', // Від рядка 2 до кінця, колонки A-G
+      range: 'events!A2:H', // Від рядка 2 до кінця, колонки A-H (додано зображення)
     });
 
     const rows = response.data.values || [];
@@ -40,6 +40,7 @@ export async function GET() {
       type: row[4] || '',
       status: row[5] || '',
       color: row[6] || 'orange',
+      image: row[7] || '',
     }));
 
     return NextResponse.json({ events });
