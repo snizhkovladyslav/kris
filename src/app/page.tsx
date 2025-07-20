@@ -16,10 +16,26 @@ interface Event {
   image: string;
 }
 
+interface BlogPost {
+  id: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  author: string;
+  date: string;
+  category: string;
+  image: string;
+  readTime: string;
+  tags: string[];
+}
+
 export default function Home() {
   const [events, setEvents] = useState<Event[]>([]);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [postsLoading, setPostsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [postsError, setPostsError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -37,7 +53,23 @@ export default function Home() {
       }
     };
 
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch('/api/blog');
+        if (!response.ok) {
+          throw new Error('Failed to fetch blog posts');
+        }
+        const data = await response.json();
+        setPosts(data.posts || []);
+      } catch (err) {
+        setPostsError(err instanceof Error ? err.message : 'Failed to fetch blog posts');
+      } finally {
+        setPostsLoading(false);
+      }
+    };
+
     fetchEvents();
+    fetchPosts();
   }, []);
 
   // Фільтруємо тільки активні та майбутні події
@@ -45,6 +77,9 @@ export default function Home() {
 
   // Беремо перші 4 події для показу на головній сторінці
   const featuredEvents = activeEvents.slice(0, 4);
+
+  // Беремо перші 3 статті для показу на головній сторінці
+  const featuredPosts = posts.slice(0, 3);
 
   const getTypeColor = (type: string) => {
     const typeColorMap: { [key: string]: string } = {
@@ -56,6 +91,18 @@ export default function Home() {
       'Лекція': 'bg-red-100 text-red-700',
     };
     return typeColorMap[type] || 'bg-gray-100 text-gray-700';
+  };
+
+  const getCategoryColor = (category: string) => {
+    const categoryColorMap: { [key: string]: string } = {
+      'Література': 'bg-orange-100 text-orange-700',
+      'Творчість': 'bg-green-100 text-green-700',
+      'Події': 'bg-blue-100 text-blue-700',
+      'Інтерв\'ю': 'bg-purple-100 text-purple-700',
+      'Рецензії': 'bg-yellow-100 text-yellow-700',
+      'Новини': 'bg-red-100 text-red-700',
+    };
+    return categoryColorMap[category] || 'bg-gray-100 text-gray-700';
   };
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50">
@@ -157,6 +204,91 @@ export default function Home() {
               className="inline-flex items-center text-orange-600 hover:text-orange-700 font-semibold"
             >
               Переглянути всі події
+              <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Blog Section */}
+      <section className="py-16 bg-gradient-to-br from-orange-50 to-red-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h3 className="text-3xl font-bold text-gray-900 mb-4">Останні статті</h3>
+            <p className="text-gray-600">Статті про літературу, творчість, події та інтерв&apos;ю з письменниками</p>
+          </div>
+
+          {postsLoading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
+              <p className="text-gray-600">Завантаження статей...</p>
+            </div>
+          ) : postsError ? (
+            <div className="text-center py-12">
+              <p className="text-red-600 mb-4">Помилка завантаження статей</p>
+              <p className="text-gray-600">Спробуйте оновити сторінку</p>
+            </div>
+          ) : featuredPosts.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-600">Наразі немає статей</p>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-3 gap-8 mb-8">
+              {featuredPosts.map((post, index) => (
+                <article key={index} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                  {post.image && (
+                    <div className="h-48 overflow-hidden">
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          target.parentElement!.innerHTML = `
+                            <div class="h-48 bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center">
+                              <span class="text-white text-2xl font-bold">📖</span>
+                            </div>
+                          `;
+                        }}
+                      />
+                    </div>
+                  )}
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-sm text-gray-600 font-medium">{post.date}</span>
+                      <span className={`text-xs px-2 py-1 rounded-full ${getCategoryColor(post.category)}`}>
+                        {post.category}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">{post.title}</h3>
+                    <p className="text-gray-600 mb-4 line-clamp-3">{post.excerpt}</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-500">Автор: {post.author}</span>
+                      <span className="text-xs text-gray-400">{post.readTime}</span>
+                    </div>
+                    <div className="mt-4">
+                      <Link
+                        href={`/blog/${post.id}`}
+                        className="inline-block bg-orange-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-orange-600 transition-colors"
+                      >
+                        Читати далі
+                      </Link>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+
+          <div className="text-center">
+            <Link
+              href="/blog"
+              className="inline-flex items-center text-orange-600 hover:text-orange-700 font-semibold"
+            >
+              Переглянути всі статті
               <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
