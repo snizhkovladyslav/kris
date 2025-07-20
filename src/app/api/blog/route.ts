@@ -35,8 +35,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Читаємо дані з листа "posts"
-    const range = 'posts!A2:J'; // Припускаємо, що дані починаються з рядка 2
+    // Читаємо дані з листа "posts" (адаптивний діапазон)
+    const range = 'posts!A2:Z'; // Читаємо більше колонок для гнучкості
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId,
       range,
@@ -50,27 +50,25 @@ export async function GET(request: NextRequest) {
 
     // Перетворюємо рядки в об'єкти BlogPost
     const posts: BlogPost[] = rows.map((row, index) => {
-      // Перевіряємо, чи є достатньо колонок
-      if (row.length < 10) {
-        console.warn(`Row ${index + 2} has insufficient columns:`, row);
-        return null;
-      }
-      
-      const [id, title, excerpt, content, author, date, category, image, readTime, tagsString] = row;
-      
+      const [id, title, excerpt, author, date, category, image, tagsString, content] = row;
+
       // Парсимо теги з рядка (розділені пробілами)
       const tags = tagsString ? tagsString.split(' ').map((tag: string) => tag.trim()).filter((tag: string) => tag.length > 0) : [];
+      
+      // Розраховуємо приблизний час читання на основі довжини контенту
+      const wordCount = content ? content.split(' ').length : 0;
+      const readTime = Math.max(1, Math.ceil(wordCount / 200)) + ' хв';
       
       return {
         id: id || `post-${index + 1}`,
         title: title || 'Без назви',
         excerpt: excerpt || 'Опис відсутній',
-        content: content || '',
+        content: content || excerpt || 'Контент відсутній',
         author: author || 'Невідомий автор',
         date: date || new Date().toLocaleDateString('uk-UA'),
         category: category || 'Інше',
         image: image || '',
-        readTime: readTime || '5 хв',
+        readTime: readTime,
         tags: tags,
       };
     }).filter(Boolean) as BlogPost[];
