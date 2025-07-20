@@ -249,7 +249,33 @@ export default function EventsPage() {
                       <p className="text-gray-600 mb-4">{event.description}</p>
                       <div className="flex items-center justify-between">
                         <span className="text-sm text-gray-500">{event.time}</span>
-                        <button className={`text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${getButtonColor(event.color)}`}>
+                        <button
+                          onClick={() => {
+                            const formUrl = new URL('https://docs.google.com/forms/d/e/1FAIpQLSdxgFUHGg_76Rm0P3e26yGpagH664TdlnzM91FGkof7_qHehA/viewform');
+
+                            const formatDateForGoogleForms = (dateStr: string) => {
+                              if (dateStr.includes('.')) {
+                                const parts = dateStr.split('.');
+                                if (parts.length === 3) {
+                                  const day = parts[0].padStart(2, '0');
+                                  const month = parts[1].padStart(2, '0');
+                                  const year = parts[2];
+                                  return `${year}-${month}-${day}`;
+                                }
+                              }
+                              return dateStr;
+                            };
+
+                            formUrl.searchParams.set('entry.1202411355', event.title);
+                            formUrl.searchParams.set('entry.1310809798', formatDateForGoogleForms(event.date));
+                            formUrl.searchParams.set('entry.1415788207', event.time);
+                            formUrl.searchParams.set('entry.841120111', event.type);
+                            formUrl.searchParams.set('usp', 'pp_url');
+
+                            window.open(formUrl.toString(), '_blank');
+                          }}
+                          className={`text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer ${getButtonColor(event.color)}`}
+                        >
                           Зареєструватися
                         </button>
                       </div>
