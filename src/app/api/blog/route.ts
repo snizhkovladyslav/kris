@@ -14,7 +14,7 @@ interface BlogPost {
   tags: string[];
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // Ініціалізуємо Google Sheets API
     const auth = new google.auth.GoogleAuth({
