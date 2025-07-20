@@ -126,7 +126,7 @@ export default function ContactPage() {
 
             <div className="bg-white p-6 rounded-xl shadow-lg">
               <h4 className="text-lg font-semibold text-gray-900 mb-3">Як можна запропонувати свою подію?</h4>
-              <p className="text-gray-600">Використайте форму "Запропонувати подію" на нашому сайті або напишіть нам на email.</p>
+              <p className="text-gray-600">Використайте форму &quot;Запропонувати подію&quot; на нашому сайті або напишіть нам на email.</p>
             </div>
 
             <div className="bg-white p-6 rounded-xl shadow-lg">
