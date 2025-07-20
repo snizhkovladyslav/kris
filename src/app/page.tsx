@@ -1,8 +1,62 @@
+"use client";
+
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { useState, useEffect } from "react";
+
+interface Event {
+  date: string;
+  title: string;
+  description: string;
+  time: string;
+  type: string;
+  status: string;
+  color: string;
+  image: string;
+}
 
 export default function Home() {
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch('/api/events');
+        if (!response.ok) {
+          throw new Error('Failed to fetch events');
+        }
+        const data = await response.json();
+        setEvents(data.events);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch events');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  // Фільтруємо тільки активні та майбутні події
+  const activeEvents = Array.isArray(events) ? events.filter(event => event.status !== 'Завершена') : [];
+
+  // Беремо перші 4 події для показу на головній сторінці
+  const featuredEvents = activeEvents.slice(0, 4);
+
+  const getTypeColor = (type: string) => {
+    const typeColorMap: { [key: string]: string } = {
+      'Зустріч': 'bg-orange-100 text-orange-700',
+      'Творча вправа': 'bg-green-100 text-green-700',
+      'Партнерська': 'bg-blue-100 text-blue-700',
+      'Вільний мікрофон': 'bg-purple-100 text-purple-700',
+      'Читацький клуб': 'bg-yellow-100 text-yellow-700',
+      'Лекція': 'bg-red-100 text-red-700',
+    };
+    return typeColorMap[type] || 'bg-gray-100 text-gray-700';
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50">
       <Header currentPage="home" />
@@ -41,53 +95,61 @@ export default function Home() {
             <p className="text-gray-600">Зустрічі з письменниками, творчі вправи та читацькі клуби</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 mb-8">
-            {/* Our Events */}
-            <div className="bg-gradient-to-br from-orange-50 to-red-50 p-6 rounded-xl border border-orange-200">
-              <h4 className="text-xl font-semibold text-gray-900 mb-4">Наші події</h4>
-              <div className="space-y-4">
-                <div className="bg-white p-4 rounded-lg shadow-sm">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-orange-600 font-medium">15 грудня 2024</span>
-                    <span className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded-full">Зустріч</span>
-                  </div>
-                  <h5 className="font-semibold text-gray-900">Презентація нової книги</h5>
-                  <p className="text-sm text-gray-600 mt-1">Зустріч з автором та обговорення творчості</p>
-                </div>
-                <div className="bg-white p-4 rounded-lg shadow-sm">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-orange-600 font-medium">22 грудня 2024</span>
-                    <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Творча вправа</span>
-                  </div>
-                  <h5 className="font-semibold text-gray-900">Письменницька майстерність</h5>
-                  <p className="text-sm text-gray-600 mt-1">Практичні вправи з написання текстів</p>
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
+              <p className="text-gray-600">Завантаження подій...</p>
+            </div>
+          ) : error ? (
+            <div className="text-center py-12">
+              <p className="text-red-600 mb-4">Помилка завантаження подій</p>
+              <p className="text-gray-600">Спробуйте оновити сторінку</p>
+            </div>
+          ) : featuredEvents.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-600">Наразі немає запланованих подій</p>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 gap-8 mb-8">
+              {/* Featured Events */}
+              <div className="bg-gradient-to-br from-orange-50 to-red-50 p-6 rounded-xl border border-orange-200">
+                <h4 className="text-xl font-semibold text-gray-900 mb-4">Найближчі події</h4>
+                <div className="space-y-4">
+                  {featuredEvents.slice(0, 2).map((event, index) => (
+                    <div key={index} className="bg-white p-4 rounded-lg shadow-sm">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm text-orange-600 font-medium">{event.date}</span>
+                        <span className={`text-xs px-2 py-1 rounded-full ${getTypeColor(event.type)}`}>
+                          {event.type}
+                        </span>
+                      </div>
+                      <h5 className="font-semibold text-gray-900">{event.title}</h5>
+                      <p className="text-sm text-gray-600 mt-1">{event.description}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
 
-            {/* All Events */}
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-200">
-              <h4 className="text-xl font-semibold text-gray-900 mb-4">Усі події</h4>
-              <div className="space-y-4">
-                <div className="bg-white p-4 rounded-lg shadow-sm">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-blue-600 font-medium">10 грудня 2024</span>
-                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">Партнерська</span>
-                  </div>
-                  <h5 className="font-semibold text-gray-900">Лекція з класичної літератури</h5>
-                  <p className="text-sm text-gray-600 mt-1">Спільна подія з українською бібліотекою</p>
-                </div>
-                <div className="bg-white p-4 rounded-lg shadow-sm">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-blue-600 font-medium">29 грудня 2024</span>
-                    <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">Вільний мікрофон</span>
-                  </div>
-                  <h5 className="font-semibold text-gray-900">Вільний мікрофон</h5>
-                  <p className="text-sm text-gray-600 mt-1">Презентація власної творчості учасників</p>
+              {/* More Events */}
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-200">
+                <h4 className="text-xl font-semibold text-gray-900 mb-4">Більше подій</h4>
+                <div className="space-y-4">
+                  {featuredEvents.slice(2, 4).map((event, index) => (
+                    <div key={index} className="bg-white p-4 rounded-lg shadow-sm">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm text-blue-600 font-medium">{event.date}</span>
+                        <span className={`text-xs px-2 py-1 rounded-full ${getTypeColor(event.type)}`}>
+                          {event.type}
+                        </span>
+                      </div>
+                      <h5 className="font-semibold text-gray-900">{event.title}</h5>
+                      <p className="text-sm text-gray-600 mt-1">{event.description}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
-          </div>
+          )}
 
           <div className="text-center">
             <Link
