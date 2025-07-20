@@ -44,7 +44,7 @@ src/
 │   ├── api/
 │   │   └── submit-event/     # API для форми подій
 │   ├── events/               # Сторінка подій
-│   ├── partnership/          # Партнерство
+
 │   ├── submit-event/         # Форма пропозиції подій
 │   ├── layout.tsx           # Основний layout
 │   └── page.tsx             # Головна сторінка
