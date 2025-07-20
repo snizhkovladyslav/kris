@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -221,15 +222,12 @@ export default function EventsPage() {
                   <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
                     <div className="h-48 bg-gray-200 overflow-hidden">
                       {event.image ? (
-                        <img
+                        <Image
                           src={event.image}
                           alt={event.title}
+                          width={400}
+                          height={192}
                           className="w-full h-full object-cover"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = 'none';
-                            target.nextElementSibling?.classList.remove('hidden');
-                          }}
                         />
                       ) : null}
                       <div className={`h-full bg-gradient-to-br ${getColorClasses(event.color)} flex items-center justify-center ${event.image ? 'hidden' : ''}`}>

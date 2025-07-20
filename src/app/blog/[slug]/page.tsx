@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect, use } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { useState, useEffect, useCallback } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -19,16 +20,18 @@ interface BlogPost {
 }
 
 export default function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = use(params);
+  const [slug, setSlug] = useState<string>('');
+
+  useEffect(() => {
+    params.then((resolvedParams) => {
+      setSlug(resolvedParams.slug);
+    });
+  }, [params]);
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchPost();
-  }, [slug]);
-
-  const fetchPost = async () => {
+  const fetchPost = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch('/api/blog');
@@ -52,7 +55,13 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
     } finally {
       setLoading(false);
     }
-  };
+  }, [slug]);
+
+  useEffect(() => {
+    if (slug) {
+      fetchPost();
+    }
+  }, [fetchPost]);
 
   if (loading) {
     return (
@@ -141,14 +150,12 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
           {/* Featured Image */}
           {post.image && (
             <div className="mb-8">
-              <img
+              <Image
                 src={post.image}
                 alt={post.title}
+                width={800}
+                height={400}
                 className="w-full h-64 md:h-96 object-cover rounded-xl shadow-lg"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
-                }}
               />
             </div>
           )}

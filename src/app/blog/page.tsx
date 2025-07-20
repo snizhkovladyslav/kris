@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -195,20 +196,12 @@ export default function BlogPage() {
                   <article key={index} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
                     {post.image && (
                       <div className="h-48 overflow-hidden">
-                        <img
+                        <Image
                           src={post.image}
                           alt={post.title}
+                          width={400}
+                          height={192}
                           className="w-full h-full object-cover"
-                          onError={(e) => {
-                            // Fallback to gradient if image fails to load
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = 'none';
-                            target.parentElement!.innerHTML = `
-                              <div class="h-48 bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center">
-                                <span class="text-white text-2xl font-bold">📖</span>
-                              </div>
-                            `;
-                          }}
                         />
                       </div>
                     )}
