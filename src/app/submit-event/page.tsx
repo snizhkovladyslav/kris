@@ -68,35 +68,7 @@ export default function SubmitEventPage() {
                 </ul>
               </div>
 
-              <div className="bg-blue-50 p-6 rounded-lg">
-                <h4 className="text-lg font-semibold text-gray-900 mb-4">Переваги Google Forms:</h4>
-                <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-600">
-                  <div className="flex items-center">
-                    <svg className="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Автоматичне збереження відповідей
-                  </div>
-                  <div className="flex items-center">
-                    <svg className="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Можливість продовжити пізніше
-                  </div>
-                  <div className="flex items-center">
-                    <svg className="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Надійна доставка повідомлень
-                  </div>
-                  <div className="flex items-center">
-                    <svg className="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Можливість додати файли
-                  </div>
-                </div>
-              </div>
+
 
               <button
                 onClick={handleGoogleFormRedirect}
