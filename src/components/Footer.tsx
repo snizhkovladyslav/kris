@@ -1,11 +1,18 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
+
 export default function Footer() {
+  const t = useTranslations('footer');
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="bg-gray-900 text-white py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-3 gap-8">
           <div>
             <h4 className="text-xl font-bold mb-4">LiterAktiv</h4>
-            <p className="text-gray-300 mb-4">Літературні зустрічі у Відні</p>
+            <p className="text-gray-300 mb-4">{t('subtitle')}</p>
             <div className="flex space-x-4">
               <a
                 href="https://www.facebook.com/groups/literaktiv"
@@ -44,17 +51,17 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-xl font-bold mb-4">Наші партнери</h4>
+            <h4 className="text-xl font-bold mb-4">{t('partners')}</h4>
             <ul className="space-y-2 text-gray-300">
-              <li>Посольство України в Республіці Австрія</li>
-              <li>Українська бібліотека парафії Св. Варвари</li>
-              <li>Unlimited Democracy</li>
+              <li>{t('partner1')}</li>
+              <li>{t('partner2')}</li>
+              <li>{t('partner3')}</li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-xl font-bold mb-4">Контакти</h4>
-            <p className="text-gray-300 mb-2">Відень, Австрія</p>
+            <h4 className="text-xl font-bold mb-4">{t('contacts')}</h4>
+            <p className="text-gray-300 mb-2">{t('location')}</p>
             <a
               href="mailto:info@literaktiv.at"
               className="text-gray-300 hover:text-white transition-colors"
@@ -65,9 +72,9 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2024 LiterAktiv. Всі права захищені.</p>
+          <p>&copy; {currentYear} LiterAktiv. {t('copyright')}</p>
         </div>
       </div>
     </footer>
   );
-} 
+}

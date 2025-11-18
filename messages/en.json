@@ -98,5 +98,15 @@
     "Інтерв'ю": "Interview",
     "Рецензії": "Reviews",
     "Новини": "News"
+  },
+  "footer": {
+    "subtitle": "Literary Meetings in Vienna",
+    "partners": "Our Partners",
+    "partner1": "Embassy of Ukraine in the Republic of Austria",
+    "partner2": "Ukrainian Library of St. Barbara Parish",
+    "partner3": "Unlimited Democracy",
+    "contacts": "Contact",
+    "location": "Vienna, Austria",
+    "copyright": "All rights reserved."
   }
 }

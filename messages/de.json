@@ -98,5 +98,15 @@
     "Інтерв'ю": "Interview",
     "Рецензії": "Rezensionen",
     "Новини": "Nachrichten"
+  },
+  "footer": {
+    "subtitle": "Literarische Treffen in Wien",
+    "partners": "Unsere Partner",
+    "partner1": "Botschaft der Ukraine in der Republik Österreich",
+    "partner2": "Ukrainische Bibliothek der St. Barbara Pfarrei",
+    "partner3": "Unlimited Democracy",
+    "contacts": "Kontakt",
+    "location": "Wien, Österreich",
+    "copyright": "Alle Rechte vorbehalten."
   }
 }
