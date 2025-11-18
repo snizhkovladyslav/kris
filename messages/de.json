@@ -1,0 +1,102 @@
+{
+  "header": {
+    "title": "LiterAktiv",
+    "subtitle": "Literarische Treffen in Wien",
+    "nav": {
+      "home": "Startseite",
+      "events": "Veranstaltungen",
+      "archive": "Archiv",
+      "blog": "Blog",
+      "contact": "Kontakt"
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Förderung der ukrainischen Literatur in Österreich",
+      "description": "Zugang für Ukrainer in Österreich zu sprachlicher, literarischer und kultureller Umgebung",
+      "upcomingEvents": "Kommende Veranstaltungen",
+      "learnMore": "Mehr erfahren"
+    },
+    "events": {
+      "title": "Veranstaltungskalender",
+      "description": "Treffen mit Schriftstellern, kreative Übungen und Leseklubs",
+      "loading": "Veranstaltungen werden geladen...",
+      "error": "Fehler beim Laden der Veranstaltungen",
+      "retry": "Bitte versuchen Sie, die Seite zu aktualisieren",
+      "noEvents": "Derzeit keine geplanten Veranstaltungen",
+      "upcoming": "Kommende Veranstaltungen",
+      "more": "Weitere Veranstaltungen",
+      "viewAll": "Alle Veranstaltungen anzeigen"
+    },
+    "blog": {
+      "title": "Neueste Artikel",
+      "description": "Artikel über Literatur, Kreativität, Veranstaltungen und Interviews mit Schriftstellern",
+      "loading": "Artikel werden geladen...",
+      "error": "Fehler beim Laden der Artikel",
+      "noPosts": "Derzeit keine Artikel",
+      "author": "Autor",
+      "readMore": "Weiterlesen",
+      "viewAll": "Alle Artikel anzeigen"
+    },
+    "about": {
+      "title": "Über uns",
+      "description": "Wir schaffen einen Raum für ukrainische Autoren, um ihre Arbeit in Österreich zu präsentieren und bieten Ukrainern Zugang zu sprachlicher, literarischer und kultureller Umgebung."
+    },
+    "whatWeDo": {
+      "title": "Was wir tun",
+      "description": "Unsere Aktivitäten zielen darauf ab, die ukrainische Literatur zu fördern und einen kulturellen Raum zu schaffen",
+      "writers": {
+        "title": "Treffen mit Schriftstellern",
+        "description": "Organisation von Treffen mit Schriftstellern und Präsentation ihrer Bücher"
+      },
+      "workshops": {
+        "title": "Kreative Übungen",
+        "description": "Durchführung kreativer Übungen im Schreibhandwerk"
+      },
+      "lectures": {
+        "title": "Vorträge und Klubs",
+        "description": "Vorträge und Leseklubs über klassische und moderne ukrainische Literatur"
+      },
+      "openMic": {
+        "title": "Offenes Mikrofon",
+        "description": "Präsentation eigener Werke durch Besucher - Prosa und Poesie"
+      }
+    },
+    "team": {
+      "title": "Unser Team",
+      "description": "Lernen Sie die Organisatoren der literarischen Treffen von LiterAktiv kennen",
+      "hanna": {
+        "name": "Hanna Hnedkova",
+        "role": "Organisatorin und Moderatorin literarischer Treffen",
+        "bio": "Hanna ist verantwortlich für die Organisation und Durchführung literarischer Treffen und schafft eine warme Atmosphäre für Diskussionen über ukrainische Literatur."
+      },
+      "khrystyna": {
+        "name": "Khrystyna Kasianova",
+        "role": "Projektkoordinatorin und Medienpartnerschaften",
+        "bio": "Khrystyna koordiniert Projekte und entwickelt Medienpartnerschaften, um das Wachstum und die Förderung der ukrainischen Kultur in Wien zu gewährleisten."
+      }
+    },
+    "cta": {
+      "title": "Machen Sie mit",
+      "subtitle": "Möchten Sie uns eine Veranstaltung vorschlagen?",
+      "description": "Wir sind immer offen für neue Ideen und Zusammenarbeit. Füllen Sie das Formular aus und wir werden uns in Kürze mit Ihnen in Verbindung setzen.",
+      "button": "Veranstaltung vorschlagen"
+    }
+  },
+  "eventTypes": {
+    "Зустріч": "Treffen",
+    "Творча вправа": "Kreative Übung",
+    "Партнерська": "Partner",
+    "Вільний мікрофон": "Offenes Mikrofon",
+    "Читацький клуб": "Leseclub",
+    "Лекція": "Vortrag"
+  },
+  "categories": {
+    "Література": "Literatur",
+    "Творчість": "Kreativität",
+    "Події": "Veranstaltungen",
+    "Інтерв'ю": "Interview",
+    "Рецензії": "Rezensionen",
+    "Новини": "Nachrichten"
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "header": {
+    "title": "LiterAktiv",
+    "subtitle": "Literary Meetings in Vienna",
+    "nav": {
+      "home": "Home",
+      "events": "Events",
+      "archive": "Archive",
+      "blog": "Blog",
+      "contact": "Contact"
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Promoting Ukrainian Literature in Austria",
+      "description": "Access for Ukrainians in Austria to linguistic, literary, and cultural environment",
+      "upcomingEvents": "Upcoming Events",
+      "learnMore": "Learn More"
+    },
+    "events": {
+      "title": "Events Calendar",
+      "description": "Meetings with writers, creative exercises, and reading clubs",
+      "loading": "Loading events...",
+      "error": "Error loading events",
+      "retry": "Please try refreshing the page",
+      "noEvents": "No planned events at the moment",
+      "upcoming": "Upcoming Events",
+      "more": "More Events",
+      "viewAll": "View All Events"
+    },
+    "blog": {
+      "title": "Latest Articles",
+      "description": "Articles about literature, creativity, events, and interviews with writers",
+      "loading": "Loading articles...",
+      "error": "Error loading articles",
+      "noPosts": "No articles at the moment",
+      "author": "Author",
+      "readMore": "Read More",
+      "viewAll": "View All Articles"
+    },
+    "about": {
+      "title": "About Us",
+      "description": "We create a space for Ukrainian authors to present their work in Austria and provide Ukrainians with access to linguistic, literary, and cultural environment."
+    },
+    "whatWeDo": {
+      "title": "What We Do",
+      "description": "Our activities aim to promote Ukrainian literature and create a cultural space",
+      "writers": {
+        "title": "Meetings with Writers",
+        "description": "Organizing meetings with writers and presenting their books"
+      },
+      "workshops": {
+        "title": "Creative Exercises",
+        "description": "Conducting creative exercises in writing craft"
+      },
+      "lectures": {
+        "title": "Lectures and Clubs",
+        "description": "Lectures and reading clubs on classical and modern Ukrainian literature"
+      },
+      "openMic": {
+        "title": "Open Mic",
+        "description": "Presentation of visitors' own work - prose and poetry"
+      }
+    },
+    "team": {
+      "title": "Our Team",
+      "description": "Meet the organizers of LiterAktiv literary meetings",
+      "hanna": {
+        "name": "Hanna Hnedkova",
+        "role": "Organizer and Host of Literary Meetings",
+        "bio": "Hanna is responsible for organizing and conducting literary meetings, creating a warm atmosphere for discussions about Ukrainian literature."
+      },
+      "khrystyna": {
+        "name": "Khrystyna Kasianova",
+        "role": "Project Coordinator and Media Partnerships",
+        "bio": "Khrystyna coordinates projects and develops media partnerships, ensuring the growth and promotion of Ukrainian culture in Vienna."
+      }
+    },
+    "cta": {
+      "title": "Join Us",
+      "subtitle": "Want to suggest your event?",
+      "description": "We are always open to new ideas and collaboration. Fill out the form and we will get in touch with you soon.",
+      "button": "Suggest an Event"
+    }
+  },
+  "eventTypes": {
+    "Зустріч": "Meeting",
+    "Творча вправа": "Creative Exercise",
+    "Партнерська": "Partner",
+    "Вільний мікрофон": "Open Mic",
+    "Читацький клуб": "Reading Club",
+    "Лекція": "Lecture"
+  },
+  "categories": {
+    "Література": "Literature",
+    "Творчість": "Creativity",
+    "Події": "Events",
+    "Інтерв'ю": "Interview",
+    "Рецензії": "Reviews",
+    "Новини": "News"
+  }
+}
