@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { useTranslations, useLocale } from "next-intl";
 
 interface Event {
   date: string;
@@ -18,6 +19,10 @@ interface Event {
 }
 
 export default function EventsPage() {
+  const t = useTranslations('events');
+  const tTypes = useTranslations('eventTypes');
+  const locale = useLocale();
+
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -31,7 +36,6 @@ export default function EventsPage() {
   }, []);
 
   useEffect(() => {
-    // Оновлюємо відображувані події при зміні фільтра або кількості
     const filtered = events.filter(event => {
       if (activeFilter === 'all') return true;
       return event.type === activeFilter;
@@ -51,7 +55,6 @@ export default function EventsPage() {
         const filteredEvents = eventsData.filter((event: Event) => event.status !== 'Завершена');
         setEvents(filteredEvents);
 
-        // Отримуємо унікальні типи подій
         const types = [...new Set(filteredEvents.map((event: Event) => event.type))] as string[];
         setUniqueTypes(types);
       } else {
@@ -118,9 +121,7 @@ export default function EventsPage() {
   };
 
   const filteredEvents = events.filter(event => {
-    // Фільтруємо тільки активні та майбутні події (не показуємо завершені)
     if (event.status === 'Завершена') return false;
-
     if (activeFilter === 'all') return true;
     return event.type === activeFilter;
   });
@@ -134,7 +135,7 @@ export default function EventsPage() {
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
-            <p className="text-gray-600">Завантаження подій...</p>
+            <p className="text-gray-600">{t('loading')}</p>
           </div>
         </div>
         <Footer />
@@ -148,12 +149,12 @@ export default function EventsPage() {
         <Header currentPage="events" />
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
-            <p className="text-red-600 mb-4">Помилка завантаження подій</p>
+            <p className="text-red-600 mb-4">{t('error')}</p>
             <button
               onClick={fetchEvents}
               className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors"
             >
-              Спробувати знову
+              {t('retry')}
             </button>
           </div>
         </div>
@@ -169,9 +170,9 @@ export default function EventsPage() {
       {/* Hero Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Календар подій</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">{t('title')}</h2>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Зустрічі з письменниками, творчі вправи, лекції та читацькі клуби
+            {t('description')}
           </p>
         </div>
       </section>
@@ -180,7 +181,6 @@ export default function EventsPage() {
       <section className="py-8 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap gap-4 justify-center">
-            {/* Кнопка "Всі події" завжди присутня */}
             <button
               onClick={() => setActiveFilter('all')}
               className={`cursor-pointer px-6 py-2 rounded-full font-semibold transition-colors ${activeFilter === 'all'
@@ -188,10 +188,9 @@ export default function EventsPage() {
                 : 'bg-gray-100 text-gray-700 hover:bg-orange-100 hover:text-orange-700'
                 }`}
             >
-              Всі події ({events.length})
+              {t('filterAll')} ({events.length})
             </button>
 
-            {/* Динамічні кнопки фільтрів на основі типів з таблиці */}
             {uniqueTypes.map((type) => (
               <button
                 key={type}
@@ -201,7 +200,7 @@ export default function EventsPage() {
                   : `${getFilterButtonColor(type)} hover:bg-orange-100 hover:text-orange-700`
                   }`}
               >
-                {type} ({events.filter(event => event.type === type).length})
+                {tTypes(type)} ({events.filter(event => event.type === type).length})
               </button>
             ))}
           </div>
@@ -213,7 +212,7 @@ export default function EventsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {displayedEvents.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-600 text-lg">Події не знайдено</p>
+              <p className="text-gray-600 text-lg">{t('noEvents')}</p>
             </div>
           ) : (
             <>
@@ -240,7 +239,7 @@ export default function EventsPage() {
                       <div className="flex items-center justify-between mb-3">
                         <span className="text-sm text-gray-600 font-medium">{event.date}</span>
                         <span className={`text-xs px-2 py-1 rounded-full ${getTypeColor(event.type)}`}>
-                          {event.type}
+                          {tTypes(event.type)}
                         </span>
                       </div>
                       <h3 className="text-xl font-bold text-gray-900 mb-2">{event.title}</h3>
@@ -274,7 +273,7 @@ export default function EventsPage() {
                           }}
                           className={`text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer ${getButtonColor(event.color)}`}
                         >
-                          Зареєструватися
+                          {t('register')}
                         </button>
                       </div>
                     </div>
@@ -289,7 +288,7 @@ export default function EventsPage() {
                     onClick={loadMoreEvents}
                     className="cursor-pointer bg-orange-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-600 transition-colors"
                   >
-                    Завантажити більше подій ({filteredEvents.length - displayedEvents.length} залишилося)
+                    {t('loadMore')} ({filteredEvents.length - displayedEvents.length})
                   </button>
                 </div>
               )}
@@ -301,15 +300,15 @@ export default function EventsPage() {
       {/* Call to Action */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h3 className="text-3xl font-bold text-gray-900 mb-6">Хочете запропонувати свою подію?</h3>
+          <h3 className="text-3xl font-bold text-gray-900 mb-6">{t('title')}</h3>
           <p className="text-lg text-gray-600 mb-8">
-            Ми завжди відкриті до нових ідей та співпраці. Заповніть форму та ми зв&apos;яжемося з вами.
+            {t('description')}
           </p>
           <Link
-            href="/submit-event"
+            href={`/${locale}/submit-event`}
             className="inline-block bg-orange-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-600 transition-colors"
           >
-            Запропонувати подію
+            {t('title')}
           </Link>
         </div>
       </section>
@@ -317,4 +316,4 @@ export default function EventsPage() {
       <Footer />
     </div>
   );
-} 
+}

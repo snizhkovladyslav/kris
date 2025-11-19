@@ -108,5 +108,58 @@
     "contacts": "Kontakt",
     "location": "Wien, Österreich",
     "copyright": "Alle Rechte vorbehalten."
+  },
+  "events": {
+    "title": "Veranstaltungskalender",
+    "description": "Treffen mit Schriftstellern, kreative Übungen und Leseklubs",
+    "loading": "Veranstaltungen werden geladen...",
+    "error": "Fehler beim Laden der Veranstaltungen",
+    "retry": "Bitte versuchen Sie, die Seite zu aktualisieren",
+    "noEvents": "Derzeit keine geplanten Veranstaltungen",
+    "filterAll": "Alle",
+    "register": "Registrieren",
+    "time": "Zeit",
+    "date": "Datum",
+    "loadMore": "Mehr laden"
+  },
+  "archive": {
+    "title": "Veranstaltungsarchiv",
+    "description": "Vergangene literarische Treffen und Veranstaltungen"
+  },
+  "blog": {
+    "title": "Blog",
+    "description": "Artikel über Literatur, Kreativität und Kultur",
+    "loading": "Artikel werden geladen...",
+    "error": "Fehler beim Laden der Artikel",
+    "noPosts": "Derzeit keine Artikel",
+    "readMore": "Weiterlesen",
+    "author": "Autor",
+    "filterAll": "Alle Kategorien",
+    "backToBlog": "Zurück zum Blog",
+    "tags": "Tags",
+    "relatedPosts": "Verwandte Artikel"
+  },
+  "contact": {
+    "title": "Kontakt",
+    "description": "Kontaktieren Sie uns",
+    "getInTouch": "Kontaktieren Sie uns",
+    "subtitle": "Haben Sie Fragen? Wir helfen Ihnen gerne!",
+    "email": "E-Mail",
+    "social": "Soziale Medien",
+    "location": "Standort",
+    "locationText": "Wien, Österreich",
+    "hours": "Öffnungszeiten",
+    "hoursText": "Termine nach Vereinbarung",
+    "faq": "Häufig gestellte Fragen",
+    "faqQ1": "Wie kann ich an einer Veranstaltung teilnehmen?",
+    "faqA1": "Die Registrierung für Veranstaltungen erfolgt über unsere Website oder soziale Medien.",
+    "faqQ2": "Sind die Veranstaltungen kostenlos?",
+    "faqA2": "Ja, die meisten unserer Veranstaltungen sind kostenlos und für alle offen.",
+    "faqQ3": "Wo finden die Treffen statt?",
+    "faqA3": "Treffen finden an verschiedenen Orten in Wien statt. Die genaue Adresse wird bei der Registrierung angegeben."
+  },
+  "submitEvent": {
+    "title": "Veranstaltung vorschlagen",
+    "description": "Teilen Sie Ihre Idee für eine literarische Veranstaltung"
   }
 }

@@ -108,5 +108,58 @@
     "contacts": "Contact",
     "location": "Vienna, Austria",
     "copyright": "All rights reserved."
+  },
+  "events": {
+    "title": "Events Calendar",
+    "description": "Meetings with writers, creative exercises, and reading clubs",
+    "loading": "Loading events...",
+    "error": "Error loading events",
+    "retry": "Please try refreshing the page",
+    "noEvents": "No planned events at the moment",
+    "filterAll": "All",
+    "register": "Register",
+    "time": "Time",
+    "date": "Date",
+    "loadMore": "Load More"
+  },
+  "archive": {
+    "title": "Events Archive",
+    "description": "Past literary meetings and events"
+  },
+  "blog": {
+    "title": "Blog",
+    "description": "Articles about literature, creativity, and culture",
+    "loading": "Loading articles...",
+    "error": "Error loading articles",
+    "noPosts": "No articles at the moment",
+    "readMore": "Read More",
+    "author": "Author",
+    "filterAll": "All Categories",
+    "backToBlog": "Back to Blog",
+    "tags": "Tags",
+    "relatedPosts": "Related Articles"
+  },
+  "contact": {
+    "title": "Contact",
+    "description": "Get in touch with us",
+    "getInTouch": "Get in Touch",
+    "subtitle": "Have questions? We're always happy to help!",
+    "email": "Email",
+    "social": "Social Media",
+    "location": "Location",
+    "locationText": "Vienna, Austria",
+    "hours": "Hours",
+    "hoursText": "Meetings by appointment",
+    "faq": "Frequently Asked Questions",
+    "faqQ1": "How can I participate in a meeting?",
+    "faqA1": "Registration for events happens through our website or social media.",
+    "faqQ2": "Are events free?",
+    "faqA2": "Yes, most of our events are free and open to everyone.",
+    "faqQ3": "Where do meetings take place?",
+    "faqA3": "Meetings take place at various locations in Vienna. The exact address is provided upon registration."
+  },
+  "submitEvent": {
+    "title": "Suggest an Event",
+    "description": "Share your idea for a literary event"
   }
 }
