@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { useTranslations, useLocale } from "next-intl";
 
 interface Event {
   date: string;
@@ -18,6 +19,10 @@ interface Event {
 }
 
 export default function ArchivePage() {
+  const t = useTranslations('archive');
+  const tEvents = useTranslations('events');
+  const tTypes = useTranslations('eventTypes');
+  const locale = useLocale();
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -120,7 +125,7 @@ export default function ArchivePage() {
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
-            <p className="text-gray-600">Завантаження архіву...</p>
+            <p className="text-gray-600">{tEvents('loading')}</p>
           </div>
         </div>
         <Footer />
@@ -134,12 +139,12 @@ export default function ArchivePage() {
         <Header currentPage="archive" />
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
-            <p className="text-red-600 mb-4">Помилка завантаження архіву</p>
+            <p className="text-red-600 mb-4">{tEvents('error')}</p>
             <button
               onClick={fetchEvents}
               className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors"
             >
-              Спробувати знову
+              {tEvents('retry')}
             </button>
           </div>
         </div>
@@ -155,9 +160,9 @@ export default function ArchivePage() {
       {/* Hero Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Архів подій</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">{t('title')}</h2>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Всі минулі події та зустрічі LiterAktiv. Перегляньте історію наших літературних вечорів
+            {t('description')}
           </p>
         </div>
       </section>
@@ -174,7 +179,7 @@ export default function ArchivePage() {
                 : 'bg-gray-100 text-gray-700 hover:bg-orange-100 hover:text-orange-700'
                 }`}
             >
-              Всі завершені події ({events.length})
+              {tEvents('filterAll')} ({events.length})
             </button>
 
             {/* Динамічні кнопки фільтрів на основі типів з таблиці */}
@@ -187,7 +192,7 @@ export default function ArchivePage() {
                   : `${getFilterButtonColor(type)} hover:bg-orange-100 hover:text-orange-700`
                   }`}
               >
-                {type} ({events.filter(event => event.type === type).length})
+                {tTypes(type)} ({events.filter(event => event.type === type).length})
               </button>
             ))}
           </div>
@@ -199,7 +204,7 @@ export default function ArchivePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {displayedEvents.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-600 text-lg">Події в архіві не знайдено</p>
+              <p className="text-gray-600 text-lg">{tEvents('noEvents')}</p>
             </div>
           ) : (
             <>
@@ -226,7 +231,7 @@ export default function ArchivePage() {
                       <div className="flex items-center justify-between mb-3">
                         <span className="text-sm text-gray-600 font-medium">{event.date}</span>
                         <span className={`text-xs px-2 py-1 rounded-full ${getTypeColor(event.type)}`}>
-                          {event.type}
+                          {tTypes(event.type)}
                         </span>
                       </div>
                       <h3 className="text-xl font-bold text-gray-900 mb-2">{event.title}</h3>
@@ -249,7 +254,7 @@ export default function ArchivePage() {
                     onClick={loadMoreEvents}
                     className="cursor-pointer bg-orange-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-600 transition-colors"
                   >
-                    Завантажити більше подій ({filteredEvents.length - displayedEvents.length} залишилося)
+                    {tEvents('loadMore')} ({filteredEvents.length - displayedEvents.length})
                   </button>
                 </div>
               )}
@@ -261,15 +266,15 @@ export default function ArchivePage() {
       {/* Call to Action */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h3 className="text-3xl font-bold text-gray-900 mb-6">Хочете побачити поточні події?</h3>
+          <h3 className="text-3xl font-bold text-gray-900 mb-6">{t('ctaTitle')}</h3>
           <p className="text-lg text-gray-600 mb-8">
-            Перегляньте майбутні події та зареєструйтесь на найцікавіші для вас
+            {t('ctaDescription')}
           </p>
           <Link
-            href="/events"
+            href={`/${locale}/events`}
             className="inline-block bg-orange-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-600 transition-colors"
           >
-            Переглянути поточні події
+            {t('ctaButton')}
           </Link>
         </div>
       </section>

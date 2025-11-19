@@ -124,7 +124,10 @@
   },
   "archive": {
     "title": "Events Archive",
-    "description": "Past literary meetings and events"
+    "description": "Past literary meetings and events",
+    "ctaTitle": "Want to see current events?",
+    "ctaDescription": "Browse upcoming events and register for the ones that interest you most",
+    "ctaButton": "View Current Events"
   },
   "blog": {
     "title": "Blog",

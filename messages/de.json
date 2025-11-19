@@ -124,7 +124,10 @@
   },
   "archive": {
     "title": "Veranstaltungsarchiv",
-    "description": "Vergangene literarische Treffen und Veranstaltungen"
+    "description": "Vergangene literarische Treffen und Veranstaltungen",
+    "ctaTitle": "Möchten Sie aktuelle Veranstaltungen sehen?",
+    "ctaDescription": "Stöbern Sie in kommenden Veranstaltungen und melden Sie sich für die interessantesten an",
+    "ctaButton": "Aktuelle Veranstaltungen anzeigen"
   },
   "blog": {
     "title": "Blog",
