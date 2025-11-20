@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { useTranslations, useLocale } from "next-intl";
 
 interface BlogPost {
   id: string;
@@ -19,7 +20,10 @@ interface BlogPost {
   tags: string[];
 }
 
-export default function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+export default function BlogPostPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
+  const t = useTranslations('blog');
+  const tCategories = useTranslations('categories');
+  const locale = useLocale();
   const [slug, setSlug] = useState<string>('');
 
   useEffect(() => {
@@ -44,13 +48,13 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
         if (foundPost) {
           setPost(foundPost);
         } else {
-          setError('Стаття не знайдена');
+          setError(t('noPosts'));
         }
       } else {
-        setError(data.error || 'Помилка завантаження статті');
+        setError(data.error || t('error'));
       }
     } catch (err) {
-      setError('Помилка завантаження статті');
+      setError(t('error'));
       console.error('Error fetching post:', err);
     } finally {
       setLoading(false);
@@ -70,7 +74,7 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
-            <p className="text-gray-600">Завантаження статті...</p>
+            <p className="text-gray-600">{t('loading')}</p>
           </div>
         </div>
         <Footer />
@@ -84,12 +88,12 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
         <Header currentPage="blog" />
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
-            <p className="text-red-600 mb-4">{error || 'Стаття не знайдена'}</p>
+            <p className="text-red-600 mb-4">{error || t('noPosts')}</p>
             <Link
-              href="/blog"
+              href={`/${locale}/blog`}
               className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors"
             >
-              Повернутися до блогу
+              {t('backToBlog')}
             </Link>
           </div>
         </div>
@@ -109,8 +113,8 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
           <nav className="mb-8">
             <ol className="flex items-center space-x-2 text-sm text-gray-600">
               <li>
-                <Link href="/blog" className="hover:text-orange-600 transition-colors">
-                  Блог
+                <Link href={`/${locale}/blog`} className="hover:text-orange-600 transition-colors">
+                  {t('title')}
                 </Link>
               </li>
               <li className="text-gray-400">/</li>
@@ -122,7 +126,7 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
           <div className="mb-8">
             <div className="flex items-center space-x-4 mb-4">
               <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-medium">
-                {post.category}
+                {tCategories(post.category)}
               </span>
               <span className="text-gray-500 text-sm">{post.readTime}</span>
             </div>
@@ -173,7 +177,7 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
           {/* Tags */}
           {post.tags && post.tags.length > 0 && (
             <div className="mt-8">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Теги:</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('tags')}:</h3>
               <div className="flex flex-wrap gap-2">
                 {post.tags.map((tag, index) => (
                   <span
@@ -191,13 +195,13 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
           <div className="mt-12 pt-8 border-t border-gray-200">
             <div className="flex justify-between items-center">
               <Link
-                href="/blog"
+                href={`/${locale}/blog`}
                 className="flex items-center space-x-2 text-orange-600 hover:text-orange-700 transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
-                <span>Повернутися до блогу</span>
+                <span>{t('backToBlog')}</span>
               </Link>
             </div>
           </div>
