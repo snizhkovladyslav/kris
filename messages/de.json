@@ -134,13 +134,18 @@
     "description": "Artikel über Literatur, Kreativität und Kultur",
     "loading": "Artikel werden geladen...",
     "error": "Fehler beim Laden der Artikel",
+    "retry": "Erneut versuchen",
     "noPosts": "Derzeit keine Artikel",
     "readMore": "Weiterlesen",
     "author": "Autor",
     "filterAll": "Alle Kategorien",
+    "loadMore": "Mehr laden",
     "backToBlog": "Zurück zum Blog",
     "tags": "Tags",
-    "relatedPosts": "Verwandte Artikel"
+    "relatedPosts": "Verwandte Artikel",
+    "ctaTitle": "Möchten Sie Ihre Geschichte teilen?",
+    "ctaDescription": "Schreiben Sie einen Artikel über Literatur, Kreativität oder Veranstaltungen für unseren Blog",
+    "ctaButton": "Artikel schreiben"
   },
   "contact": {
     "title": "Kontakt",

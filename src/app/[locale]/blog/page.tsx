@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { useTranslations, useLocale } from "next-intl";
 
 interface BlogPost {
   id: string;
@@ -20,6 +21,9 @@ interface BlogPost {
 }
 
 export default function BlogPage() {
+  const t = useTranslations('blog');
+  const tCategories = useTranslations('categories');
+  const locale = useLocale();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -108,7 +112,7 @@ export default function BlogPage() {
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
-            <p className="text-gray-600">Завантаження блогу...</p>
+            <p className="text-gray-600">{t('loading')}</p>
           </div>
         </div>
         <Footer />
@@ -122,12 +126,12 @@ export default function BlogPage() {
         <Header currentPage="blog" />
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
-            <p className="text-red-600 mb-4">Помилка завантаження блогу</p>
+            <p className="text-red-600 mb-4">{t('error')}</p>
             <button
               onClick={fetchPosts}
               className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors"
             >
-              Спробувати знову
+              {t('retry')}
             </button>
           </div>
         </div>
@@ -143,9 +147,9 @@ export default function BlogPage() {
       {/* Hero Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Блог LiterAktiv</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">{t('title')}</h2>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Статті про літературу, творчість, події та інтерв&apos;ю з письменниками
+            {t('description')}
           </p>
         </div>
       </section>
@@ -162,7 +166,7 @@ export default function BlogPage() {
                 : 'bg-gray-100 text-gray-700 hover:bg-orange-100 hover:text-orange-700'
                 }`}
             >
-              Всі статті ({posts.length})
+              {t('filterAll')} ({posts.length})
             </button>
 
             {/* Динамічні кнопки фільтрів на основі категорій з таблиці */}
@@ -175,7 +179,7 @@ export default function BlogPage() {
                   : `${getFilterButtonColor(category)} hover:bg-orange-100 hover:text-orange-700`
                   }`}
               >
-                {category} ({posts.filter(post => post.category === category).length})
+                {tCategories(category)} ({posts.filter(post => post.category === category).length})
               </button>
             ))}
           </div>
@@ -187,7 +191,7 @@ export default function BlogPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {displayedPosts.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-600 text-lg">Статті не знайдено</p>
+              <p className="text-gray-600 text-lg">{t('noPosts')}</p>
             </div>
           ) : (
             <>
@@ -209,21 +213,21 @@ export default function BlogPage() {
                       <div className="flex items-center justify-between mb-3">
                         <span className="text-sm text-gray-600 font-medium">{post.date}</span>
                         <span className={`text-xs px-2 py-1 rounded-full ${getCategoryColor(post.category)}`}>
-                          {post.category}
+                          {tCategories(post.category)}
                         </span>
                       </div>
                       <h3 className="text-xl font-bold text-gray-900 mb-2">{post.title}</h3>
                       <p className="text-gray-600 mb-4 line-clamp-3">{post.excerpt}</p>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-500">Автор: {post.author}</span>
+                        <span className="text-sm text-gray-500">{t('author')}: {post.author}</span>
                         <span className="text-xs text-gray-400">{post.readTime}</span>
                       </div>
                       <div className="mt-4">
                         <Link
-                          href={`/blog/${post.id}`}
+                          href={`/${locale}/blog/${post.id}`}
                           className="inline-block bg-orange-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-orange-600 transition-colors"
                         >
-                          Читати далі
+                          {t('readMore')}
                         </Link>
                       </div>
                     </div>
@@ -238,7 +242,7 @@ export default function BlogPage() {
                     onClick={loadMorePosts}
                     className="cursor-pointer bg-orange-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-600 transition-colors"
                   >
-                    Завантажити більше статей ({filteredPosts.length - displayedPosts.length} залишилося)
+                    {t('loadMore')} ({filteredPosts.length - displayedPosts.length})
                   </button>
                 </div>
               )}
@@ -250,15 +254,15 @@ export default function BlogPage() {
       {/* Call to Action */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h3 className="text-3xl font-bold text-gray-900 mb-6">Хочете поділитися своєю історією?</h3>
+          <h3 className="text-3xl font-bold text-gray-900 mb-6">{t('ctaTitle')}</h3>
           <p className="text-lg text-gray-600 mb-8">
-            Напишіть статтю про літературу, творчість або події для нашого блогу
+            {t('ctaDescription')}
           </p>
           <Link
-            href="/submit-article"
+            href={`/${locale}/submit-article`}
             className="inline-block bg-orange-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-600 transition-colors"
           >
-            Написати статтю
+            {t('ctaButton')}
           </Link>
         </div>
       </section>

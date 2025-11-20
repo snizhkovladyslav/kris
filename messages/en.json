@@ -134,13 +134,18 @@
     "description": "Articles about literature, creativity, and culture",
     "loading": "Loading articles...",
     "error": "Error loading articles",
+    "retry": "Try Again",
     "noPosts": "No articles at the moment",
     "readMore": "Read More",
     "author": "Author",
     "filterAll": "All Categories",
+    "loadMore": "Load More",
     "backToBlog": "Back to Blog",
     "tags": "Tags",
-    "relatedPosts": "Related Articles"
+    "relatedPosts": "Related Articles",
+    "ctaTitle": "Want to share your story?",
+    "ctaDescription": "Write an article about literature, creativity, or events for our blog",
+    "ctaButton": "Write an Article"
   },
   "contact": {
     "title": "Contact",
