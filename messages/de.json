@@ -176,6 +176,18 @@
   },
   "submitEvent": {
     "title": "Veranstaltung vorschlagen",
-    "description": "Teilen Sie Ihre Idee für eine literarische Veranstaltung"
+    "description": "Wir sind immer offen für neue Ideen und Zusammenarbeit. Füllen Sie das untenstehende Formular aus, um Ihre Veranstaltung vorzuschlagen.",
+    "formTitle": "Veranstaltungsvorschlagsformular",
+    "formDescription": "Wir verwenden Google Forms für Veranstaltungsvorschläge. Dies gewährleistet Zuverlässigkeit und Komfort.",
+    "prepareTitle": "Was Sie vorbereiten müssen:",
+    "prepareItem1": "Veranstaltungsname und Beschreibung",
+    "prepareItem2": "Datum und Uhrzeit",
+    "prepareItem3": "Ihre Kontaktinformationen",
+    "prepareItem4": "Zusätzliche Informationen (Veranstaltungsort, Anforderungen, usw.)",
+    "openForm": "Veranstaltungsvorschlagsformular öffnen",
+    "opening": "Formular wird geöffnet...",
+    "formNote": "Das Formular wird in einem neuen Fenster geöffnet. Sie erhalten nach dem Absenden eine Bestätigungs-E-Mail.",
+    "alternativeTitle": "Alternative Kontaktmethoden",
+    "facebookGroup": "Facebook-Gruppe"
   }
 }

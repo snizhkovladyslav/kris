@@ -3,8 +3,10 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function SubmitEventPage() {
+  const t = useTranslations('submitEvent');
   const [isRedirecting, setIsRedirecting] = useState(false);
 
   const handleGoogleFormRedirect = () => {
@@ -22,9 +24,9 @@ export default function SubmitEventPage() {
       {/* Hero Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Запропонувати подію</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">{t('title')}</h2>
           <p className="text-xl text-gray-600 mb-8">
-            Ми завжди відкриті до нових ідей та співпраці. Заповніть форму нижче, щоб запропонувати свою подію.
+            {t('description')}
           </p>
         </div>
       </section>
@@ -39,31 +41,31 @@ export default function SubmitEventPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Форма запропонування події</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">{t('formTitle')}</h3>
               <p className="text-gray-600 mb-6">
-                Для запропонування події використовується Google Forms. Це забезпечує надійність та зручність.
+                {t('formDescription')}
               </p>
             </div>
 
             <div className="space-y-6">
               <div className="bg-white p-6 rounded-lg shadow-sm">
-                <h4 className="text-lg font-semibold text-gray-900 mb-4">Що потрібно підготувати:</h4>
+                <h4 className="text-lg font-semibold text-gray-900 mb-4">{t('prepareTitle')}</h4>
                 <ul className="text-left space-y-2 text-gray-600">
                   <li className="flex items-start">
                     <span className="text-orange-500 mr-2">•</span>
-                    Назва та опис події
+                    {t('prepareItem1')}
                   </li>
                   <li className="flex items-start">
                     <span className="text-orange-500 mr-2">•</span>
-                    Дата та час проведення
+                    {t('prepareItem2')}
                   </li>
                   <li className="flex items-start">
                     <span className="text-orange-500 mr-2">•</span>
-                    Ваша контактна інформація
+                    {t('prepareItem3')}
                   </li>
                   <li className="flex items-start">
                     <span className="text-orange-500 mr-2">•</span>
-                    Додаткова інформація (місце, вимоги, тощо)
+                    {t('prepareItem4')}
                   </li>
                 </ul>
               </div>
@@ -78,27 +80,27 @@ export default function SubmitEventPage() {
                 {isRedirecting ? (
                   <>
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-                    Відкриття форми...
+                    {t('opening')}
                   </>
                 ) : (
                   <>
                     <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
-                    Відкрити форму запропонування події
+                    {t('openForm')}
                   </>
                 )}
               </button>
 
               <p className="text-sm text-gray-500">
-                Форма відкриється в новому вікні. Після заповнення ви отримаєте підтвердження на email.
+                {t('formNote')}
               </p>
             </div>
           </div>
 
           {/* Alternative Contact */}
           <div className="mt-8 bg-gray-50 p-6 rounded-xl text-center">
-            <h4 className="text-lg font-semibold text-gray-900 mb-4">Альтернативні способи зв&apos;язку</h4>
+            <h4 className="text-lg font-semibold text-gray-900 mb-4">{t('alternativeTitle')}</h4>
             <div className="grid md:grid-cols-2 gap-4 text-sm">
               <div className="flex items-center justify-center">
                 <svg className="w-5 h-5 text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -121,7 +123,7 @@ export default function SubmitEventPage() {
                   rel="noopener noreferrer"
                   className="text-gray-600 hover:text-orange-600 transition-colors"
                 >
-                  Facebook група
+                  {t('facebookGroup')}
                 </a>
               </div>
             </div>

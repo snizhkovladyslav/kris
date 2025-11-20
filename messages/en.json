@@ -176,6 +176,18 @@
   },
   "submitEvent": {
     "title": "Suggest an Event",
-    "description": "Share your idea for a literary event"
+    "description": "We're always open to new ideas and collaboration. Fill out the form below to suggest your event.",
+    "formTitle": "Event Suggestion Form",
+    "formDescription": "We use Google Forms for event suggestions. This ensures reliability and convenience.",
+    "prepareTitle": "What you need to prepare:",
+    "prepareItem1": "Event name and description",
+    "prepareItem2": "Date and time",
+    "prepareItem3": "Your contact information",
+    "prepareItem4": "Additional information (venue, requirements, etc.)",
+    "openForm": "Open Event Suggestion Form",
+    "opening": "Opening form...",
+    "formNote": "The form will open in a new window. You'll receive a confirmation email after submission.",
+    "alternativeTitle": "Alternative Contact Methods",
+    "facebookGroup": "Facebook Group"
   }
 }
