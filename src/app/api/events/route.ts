@@ -12,7 +12,7 @@ const auth = new google.auth.GoogleAuth({
 
 const sheets = google.sheets({ version: 'v4', auth });
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const spreadsheetId = process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
     
@@ -23,10 +23,18 @@ export async function GET() {
       );
     }
 
-    // Отримуємо дані з таблиці "events"
+    // Отримуємо локаль з query параметрів
+    const { searchParams } = new URL(request.url);
+    const locale = searchParams.get('locale') || 'uk';
+    
+    // Валідація локалі
+    const validLocales = ['uk', 'de', 'en'];
+    const safeLocale = validLocales.includes(locale) ? locale : 'uk';
+
+    // Отримуємо дані з таблиці "events_{locale}"
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId,
-      range: 'events!A2:H', // Від рядка 2 до кінця, колонки A-H (додано зображення)
+      range: `events_${safeLocale}!A2:H`, // Від рядка 2 до кінця, колонки A-H
     });
 
     const rows = response.data.values || [];

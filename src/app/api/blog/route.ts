@@ -14,7 +14,7 @@ interface BlogPost {
   tags: string[];
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     // Ініціалізуємо Google Sheets API
     const auth = new google.auth.GoogleAuth({
@@ -35,8 +35,16 @@ export async function GET() {
       );
     }
 
-    // Читаємо дані з листа "posts" (адаптивний діапазон)
-    const range = 'posts!A2:Z'; // Читаємо більше колонок для гнучкості
+    // Отримуємо локаль з query параметрів
+    const { searchParams } = new URL(request.url);
+    const locale = searchParams.get('locale') || 'uk';
+    
+    // Валідація локалі
+    const validLocales = ['uk', 'de', 'en'];
+    const safeLocale = validLocales.includes(locale) ? locale : 'uk';
+
+    // Читаємо дані з листа "posts_{locale}"
+    const range = `posts_${safeLocale}!A2:Z`;
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId,
       range,

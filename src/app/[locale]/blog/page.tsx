@@ -49,7 +49,7 @@ export default function BlogPage() {
   const fetchPosts = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/blog');
+      const response = await fetch(`/api/blog?locale=${locale}`);
       const data = await response.json();
 
       if (response.ok) {

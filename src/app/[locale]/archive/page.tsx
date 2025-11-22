@@ -48,7 +48,7 @@ export default function ArchivePage() {
   const fetchEvents = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/events');
+      const response = await fetch(`/api/events?locale=${locale}`);
       const data = await response.json();
 
       if (response.ok) {

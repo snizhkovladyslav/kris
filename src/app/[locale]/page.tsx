@@ -47,7 +47,7 @@ export default function Home() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch('/api/events');
+        const response = await fetch(`/api/events?locale=${locale}`);
         if (!response.ok) {
           throw new Error('Failed to fetch events');
         }
@@ -62,7 +62,7 @@ export default function Home() {
 
     const fetchPosts = async () => {
       try {
-        const response = await fetch('/api/blog');
+        const response = await fetch(`/api/blog?locale=${locale}`);
         if (!response.ok) {
           throw new Error('Failed to fetch blog posts');
         }
