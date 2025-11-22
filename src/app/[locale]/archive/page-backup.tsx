@@ -13,30 +13,29 @@ interface Event {
   description: string;
   time: string;
   type: string;
-  status: 'Активна' | 'Скасована' | 'Майбутня' | 'Завершена';
+  status: string;
   color: string;
   image: string;
 }
 
-export default function ArchivePage() {
-  const t = useTranslations('archive');
-  const tEvents = useTranslations('events');
+export default function EventsPage() {
+  const t = useTranslations('events');
   const tTypes = useTranslations('eventTypes');
   const locale = useLocale();
+
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState('all');
   const [uniqueTypes, setUniqueTypes] = useState<string[]>([]);
   const [displayedEvents, setDisplayedEvents] = useState<Event[]>([]);
-  const [visibleCount, setVisibleCount] = useState(9);
+  const [visibleCount, setVisibleCount] = useState(6);
 
   useEffect(() => {
     fetchEvents();
   }, []);
 
   useEffect(() => {
-    // Оновлюємо відображувані події при зміні фільтра або кількості
     const filtered = events.filter(event => {
       if (activeFilter === 'all') return true;
       return event.type === activeFilter;
@@ -53,12 +52,10 @@ export default function ArchivePage() {
 
       if (response.ok) {
         const eventsData = data.events || [];
-        // Фільтруємо тільки завершені події для архіву
-        const completedEvents = eventsData.filter((event: Event) => event.status === 'Завершена');
-        setEvents(completedEvents);
+        const filteredEvents = eventsData.filter((event: Event) => event.status !== 'Завершена');
+        setEvents(filteredEvents);
 
-        // Отримуємо унікальні типи подій тільки з завершених подій
-        const types = [...new Set(completedEvents.map((event: Event) => event.type))] as string[];
+        const types = [...new Set(filteredEvents.map((event: Event) => event.type))] as string[];
         setUniqueTypes(types);
       } else {
         setError(data.error || 'Failed to fetch events');
@@ -72,7 +69,7 @@ export default function ArchivePage() {
   };
 
   const loadMoreEvents = () => {
-    setVisibleCount(prev => prev + 9);
+    setVisibleCount(prev => prev + 6);
   };
 
   const getColorClasses = (color: string) => {
@@ -90,7 +87,7 @@ export default function ArchivePage() {
   const getTypeColor = (type: string) => {
     const typeColorMap: { [key: string]: string } = {
       'Зустріч': 'bg-orange-100 text-orange-700',
-      'Творчий Воркшоп': 'bg-green-100 text-green-700',
+      'Творча вправа': 'bg-green-100 text-green-700',
       'Партнерська': 'bg-blue-100 text-blue-700',
       'Вільний мікрофон': 'bg-purple-100 text-purple-700',
       'Читацький клуб': 'bg-yellow-100 text-yellow-700',
@@ -99,10 +96,22 @@ export default function ArchivePage() {
     return typeColorMap[type] || 'bg-gray-100 text-gray-700';
   };
 
+  const getButtonColor = (color: string) => {
+    const buttonColorMap: { [key: string]: string } = {
+      orange: 'bg-orange-500 hover:bg-orange-600',
+      green: 'bg-green-500 hover:bg-green-600',
+      blue: 'bg-blue-500 hover:bg-blue-600',
+      purple: 'bg-purple-500 hover:bg-purple-600',
+      yellow: 'bg-yellow-500 hover:bg-yellow-600',
+      red: 'bg-red-500 hover:bg-red-600',
+    };
+    return buttonColorMap[color] || 'bg-orange-500 hover:bg-orange-600';
+  };
+
   const getFilterButtonColor = (filterType: string) => {
     const filterColorMap: { [key: string]: string } = {
       'Зустріч': 'bg-orange-100 text-orange-700',
-      'Творчий Воркшоп': 'bg-green-100 text-green-700',
+      'Творча вправа': 'bg-green-100 text-green-700',
       'Партнерська': 'bg-blue-100 text-blue-700',
       'Вільний мікрофон': 'bg-purple-100 text-purple-700',
       'Читацький клуб': 'bg-yellow-100 text-yellow-700',
@@ -112,6 +121,7 @@ export default function ArchivePage() {
   };
 
   const filteredEvents = events.filter(event => {
+    if (event.status === 'Завершена') return false;
     if (activeFilter === 'all') return true;
     return event.type === activeFilter;
   });
@@ -121,11 +131,11 @@ export default function ArchivePage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50">
-        <Header currentPage="archive" />
+        <Header currentPage="events" />
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
-            <p className="text-gray-600">{tEvents('loading')}</p>
+            <p className="text-gray-600">{t('loading')}</p>
           </div>
         </div>
         <Footer />
@@ -136,15 +146,15 @@ export default function ArchivePage() {
   if (error) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50">
-        <Header currentPage="archive" />
+        <Header currentPage="events" />
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
-            <p className="text-red-600 mb-4">{tEvents('error')}</p>
+            <p className="text-red-600 mb-4">{t('error')}</p>
             <button
               onClick={fetchEvents}
               className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors"
             >
-              {tEvents('retry')}
+              {t('retry')}
             </button>
           </div>
         </div>
@@ -155,7 +165,7 @@ export default function ArchivePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50">
-      <Header currentPage="archive" />
+      <Header currentPage="events" />
 
       {/* Hero Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
@@ -171,7 +181,6 @@ export default function ArchivePage() {
       <section className="py-8 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap gap-4 justify-center">
-            {/* Кнопка "Всі події" завжди присутня */}
             <button
               onClick={() => setActiveFilter('all')}
               className={`cursor-pointer px-6 py-2 rounded-full font-semibold transition-colors ${activeFilter === 'all'
@@ -179,10 +188,9 @@ export default function ArchivePage() {
                 : 'bg-gray-100 text-gray-700 hover:bg-orange-100 hover:text-orange-700'
                 }`}
             >
-              {tEvents('filterAll')} ({events.length})
+              {t('filterAll')} ({events.length})
             </button>
 
-            {/* Динамічні кнопки фільтрів на основі типів з таблиці */}
             {uniqueTypes.map((type) => (
               <button
                 key={type}
@@ -204,7 +212,7 @@ export default function ArchivePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {displayedEvents.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-600 text-lg">{tEvents('noEvents')}</p>
+              <p className="text-gray-600 text-lg">{t('noEvents')}</p>
             </div>
           ) : (
             <>
@@ -238,9 +246,35 @@ export default function ArchivePage() {
                       <p className="text-gray-600 mb-4">{event.description}</p>
                       <div className="flex items-center justify-between">
                         <span className="text-sm text-gray-500">{event.time}</span>
-                        <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
-                          Завершена
-                        </span>
+                        <button
+                          onClick={() => {
+                            const formUrl = new URL('https://docs.google.com/forms/d/e/1FAIpQLSdxgFUHGg_76Rm0P3e26yGpagH664TdlnzM91FGkof7_qHehA/viewform');
+
+                            const formatDateForGoogleForms = (dateStr: string) => {
+                              if (dateStr.includes('.')) {
+                                const parts = dateStr.split('.');
+                                if (parts.length === 3) {
+                                  const day = parts[0].padStart(2, '0');
+                                  const month = parts[1].padStart(2, '0');
+                                  const year = parts[2];
+                                  return `${year}-${month}-${day}`;
+                                }
+                              }
+                              return dateStr;
+                            };
+
+                            formUrl.searchParams.set('entry.1202411355', event.title);
+                            formUrl.searchParams.set('entry.1310809798', formatDateForGoogleForms(event.date));
+                            formUrl.searchParams.set('entry.1415788207', event.time);
+                            formUrl.searchParams.set('entry.841120111', event.type);
+                            formUrl.searchParams.set('usp', 'pp_url');
+
+                            window.open(formUrl.toString(), '_blank');
+                          }}
+                          className={`text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer ${getButtonColor(event.color)}`}
+                        >
+                          {t('register')}
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -254,7 +288,7 @@ export default function ArchivePage() {
                     onClick={loadMoreEvents}
                     className="cursor-pointer bg-orange-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-600 transition-colors"
                   >
-                    {tEvents('loadMore')} ({filteredEvents.length - displayedEvents.length})
+                    {t('loadMore')} ({filteredEvents.length - displayedEvents.length})
                   </button>
                 </div>
               )}
@@ -266,15 +300,15 @@ export default function ArchivePage() {
       {/* Call to Action */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h3 className="text-3xl font-bold text-gray-900 mb-6">{t('ctaTitle')}</h3>
+          <h3 className="text-3xl font-bold text-gray-900 mb-6">{t('title')}</h3>
           <p className="text-lg text-gray-600 mb-8">
-            {t('ctaDescription')}
+            {t('description')}
           </p>
           <Link
-            href={`/${locale}/events`}
+            href={`/${locale}/submit-event`}
             className="inline-block bg-orange-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-600 transition-colors"
           >
-            {t('ctaButton')}
+            {t('title')}
           </Link>
         </div>
       </section>
@@ -282,4 +316,4 @@ export default function ArchivePage() {
       <Footer />
     </div>
   );
-} 
+}

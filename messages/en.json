@@ -19,7 +19,7 @@
     },
     "events": {
       "title": "Events Calendar",
-      "description": "Meetings with writers, creative exercises, and reading clubs",
+      "description": "Meetings with writers, creative workshops, and reading clubs",
       "loading": "Loading events...",
       "error": "Error loading events",
       "retry": "Please try refreshing the page",
@@ -50,8 +50,8 @@
         "description": "Organizing meetings with writers and presenting their books"
       },
       "workshops": {
-        "title": "Creative Exercises",
-        "description": "Conducting creative exercises in writing craft"
+        "title": "Creative Workshops",
+        "description": "Conducting creative workshops in writing craft"
       },
       "lectures": {
         "title": "Lectures and Clubs",
@@ -85,11 +85,12 @@
   },
   "eventTypes": {
     "Зустріч": "Meeting",
-    "Творча вправа": "Creative Exercise",
+    "Творчий Воркшоп": "Creative Workshop",
     "Партнерська": "Partner",
     "Вільний мікрофон": "Open Mic",
     "Читацький клуб": "Reading Club",
-    "Лекція": "Lecture"
+    "Лекція": "Lecture",
+    "Святкова подія": "Holiday Event"
   },
   "categories": {
     "Література": "Literature",
@@ -111,7 +112,7 @@
   },
   "events": {
     "title": "Events Calendar",
-    "description": "Meetings with writers, creative exercises, and reading clubs",
+    "description": "Meetings with writers, creative workshops, and reading clubs",
     "loading": "Loading events...",
     "error": "Error loading events",
     "retry": "Please try refreshing the page",

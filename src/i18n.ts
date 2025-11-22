@@ -13,11 +13,19 @@ export const localeNames: Record<Locale, string> = {
   en: 'English',
 };
 
-export default getRequestConfig(async ({ locale }) => {
-  // Validate that the incoming `locale` parameter is valid
-  if (!locales.includes(locale as Locale)) notFound();
+export default getRequestConfig(async ({ requestLocale }) => {
+  // This typically corresponds to the `[locale]` segment
+  let locale = await requestLocale;
+
+  // Ensure that a valid locale is used
+  if (!locale || !locales.includes(locale as Locale)) {
+    locale = defaultLocale;
+  }
+
+  console.log('i18n resolved locale:', locale);
 
   return {
+    locale,
     messages: (await import(`../messages/${locale}.json`)).default,
   };
 });

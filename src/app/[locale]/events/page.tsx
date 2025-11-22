@@ -87,7 +87,7 @@ export default function EventsPage() {
   const getTypeColor = (type: string) => {
     const typeColorMap: { [key: string]: string } = {
       'Зустріч': 'bg-orange-100 text-orange-700',
-      'Творча вправа': 'bg-green-100 text-green-700',
+      'Творчий Воркшоп': 'bg-green-100 text-green-700',
       'Партнерська': 'bg-blue-100 text-blue-700',
       'Вільний мікрофон': 'bg-purple-100 text-purple-700',
       'Читацький клуб': 'bg-yellow-100 text-yellow-700',
@@ -111,7 +111,7 @@ export default function EventsPage() {
   const getFilterButtonColor = (filterType: string) => {
     const filterColorMap: { [key: string]: string } = {
       'Зустріч': 'bg-orange-100 text-orange-700',
-      'Творча вправа': 'bg-green-100 text-green-700',
+      'Творчий Воркшоп': 'bg-green-100 text-green-700',
       'Партнерська': 'bg-blue-100 text-blue-700',
       'Вільний мікрофон': 'bg-purple-100 text-purple-700',
       'Читацький клуб': 'bg-yellow-100 text-yellow-700',

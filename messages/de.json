@@ -19,7 +19,7 @@
     },
     "events": {
       "title": "Veranstaltungskalender",
-      "description": "Treffen mit Schriftstellern, kreative Übungen und Leseklubs",
+      "description": "Treffen mit Schriftstellern, kreative Workshops und Leseklubs",
       "loading": "Veranstaltungen werden geladen...",
       "error": "Fehler beim Laden der Veranstaltungen",
       "retry": "Bitte versuchen Sie, die Seite zu aktualisieren",
@@ -50,8 +50,8 @@
         "description": "Organisation von Treffen mit Schriftstellern und Präsentation ihrer Bücher"
       },
       "workshops": {
-        "title": "Kreative Übungen",
-        "description": "Durchführung kreativer Übungen im Schreibhandwerk"
+        "title": "Kreative Workshops",
+        "description": "Durchführung kreativer Workshops im Schreibhandwerk"
       },
       "lectures": {
         "title": "Vorträge und Klubs",
@@ -85,11 +85,12 @@
   },
   "eventTypes": {
     "Зустріч": "Treffen",
-    "Творча вправа": "Kreative Übung",
+    "Творчий Воркшоп": "Kreativer Workshop",
     "Партнерська": "Partner",
     "Вільний мікрофон": "Offenes Mikrofon",
     "Читацький клуб": "Leseclub",
-    "Лекція": "Vortrag"
+    "Лекція": "Vortrag",
+    "Святкова подія": "Festliche Veranstaltung"
   },
   "categories": {
     "Література": "Literatur",
@@ -111,7 +112,7 @@
   },
   "events": {
     "title": "Veranstaltungskalender",
-    "description": "Treffen mit Schriftstellern, kreative Übungen und Leseklubs",
+    "description": "Treffen mit Schriftstellern, kreative Workshops und Leseklubs",
     "loading": "Veranstaltungen werden geladen...",
     "error": "Fehler beim Laden der Veranstaltungen",
     "retry": "Bitte versuchen Sie, die Seite zu aktualisieren",
