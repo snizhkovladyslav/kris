@@ -77,7 +77,7 @@ export default function Home() {
 
     fetchEvents();
     fetchPosts();
-  }, []);
+  }, [locale]);
 
   // Filter only active and future events
   const activeEvents = Array.isArray(events) ? events.filter(event => event.status !== 'Завершена') : [];

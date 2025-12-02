@@ -34,7 +34,8 @@ export default function BlogPage() {
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [locale]);
 
   useEffect(() => {
     // Оновлюємо відображувані пости при зміні фільтра або кількості

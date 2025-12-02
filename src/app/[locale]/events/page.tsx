@@ -33,7 +33,8 @@ export default function EventsPage() {
 
   useEffect(() => {
     fetchEvents();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [locale]);
 
   useEffect(() => {
     const filtered = events.filter(event => {

@@ -33,7 +33,8 @@ export default function ArchivePage() {
 
   useEffect(() => {
     fetchEvents();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [locale]);
 
   useEffect(() => {
     // Оновлюємо відображувані події при зміні фільтра або кількості

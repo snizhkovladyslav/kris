@@ -59,13 +59,13 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
     } finally {
       setLoading(false);
     }
-  }, [slug]);
+  }, [slug, t]);
 
   useEffect(() => {
     if (slug) {
       fetchPost();
     }
-  }, [fetchPost]);
+  }, [slug, fetchPost]);
 
   if (loading) {
     return (
