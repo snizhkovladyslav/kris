@@ -1,6 +1,16 @@
 import { NextResponse } from 'next/server';
 import { google } from 'googleapis';
 
+// Конвертує Google Drive посилання у формат для прямого вбудовування
+function convertGoogleDriveUrl(url: string): string {
+  if (!url) return '';
+  const driveMatch = url.match(/drive\.google\.com\/file\/d\/([^\/]+)/);
+  if (driveMatch) {
+    return `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
+  }
+  return url;
+}
+
 interface BlogPost {
   id: string;
   title: string;
@@ -75,7 +85,7 @@ export async function GET(request: Request) {
         author: author || 'Невідомий автор',
         date: date || new Date().toLocaleDateString('uk-UA'),
         category: category || 'Інше',
-        image: image || '',
+        image: convertGoogleDriveUrl(image || ''),
         readTime: readTime,
         tags: tags,
       };

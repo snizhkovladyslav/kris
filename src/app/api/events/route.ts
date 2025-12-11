@@ -1,6 +1,16 @@
 import { NextResponse } from 'next/server';
 import { google } from 'googleapis';
 
+// Конвертує Google Drive посилання у формат для прямого вбудовування
+function convertGoogleDriveUrl(url: string): string {
+  if (!url) return '';
+  const driveMatch = url.match(/drive\.google\.com\/file\/d\/([^\/]+)/);
+  if (driveMatch) {
+    return `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
+  }
+  return url;
+}
+
 // Налаштування Google Sheets API
 const auth = new google.auth.GoogleAuth({
   credentials: {
@@ -48,7 +58,7 @@ export async function GET(request: Request) {
       type: row[4] || '',
       status: row[5] || '',
       color: row[6] || 'orange',
-      image: row[7] || '',
+      image: convertGoogleDriveUrl(row[7] || ''),
     }));
 
     return NextResponse.json({ events });
