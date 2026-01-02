@@ -16,6 +16,7 @@ interface Event {
   status: string;
   color: string;
   image: string;
+  external_url: string;
 }
 
 export default function EventsPage() {
@@ -219,7 +220,7 @@ export default function EventsPage() {
             <>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {displayedEvents.map((event, index) => (
-                  <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                  <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow flex flex-col">
                     <div className="h-48 bg-gray-200 overflow-hidden">
                       {event.image ? (
                         <Image
@@ -236,7 +237,7 @@ export default function EventsPage() {
                         </span>
                       </div>
                     </div>
-                    <div className="p-6">
+                    <div className="p-6 flex flex-col flex-grow">
                       <div className="flex items-center justify-between mb-3">
                         <span className="text-sm text-gray-600 font-medium">{event.date}</span>
                         <span className={`text-xs px-2 py-1 rounded-full ${getTypeColor(event.type)}`}>
@@ -245,37 +246,50 @@ export default function EventsPage() {
                       </div>
                       <h3 className="text-xl font-bold text-gray-900 mb-2">{event.title}</h3>
                       <p className="text-gray-600 mb-4">{event.description}</p>
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between mt-auto">
                         <span className="text-sm text-gray-500">{event.time}</span>
-                        <button
-                          onClick={() => {
-                            const formUrl = new URL('https://docs.google.com/forms/d/e/1FAIpQLSdxgFUHGg_76Rm0P3e26yGpagH664TdlnzM91FGkof7_qHehA/viewform');
+                        {event.type === 'Партнерська' ? (
+                          event.external_url ? (
+                            <a
+                              href={event.external_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer ${getButtonColor(event.color)}`}
+                            >
+                              {t('details')}
+                            </a>
+                          ) : null
+                        ) : (
+                          <button
+                            onClick={() => {
+                              const formUrl = new URL('https://docs.google.com/forms/d/e/1FAIpQLSdxgFUHGg_76Rm0P3e26yGpagH664TdlnzM91FGkof7_qHehA/viewform');
 
-                            const formatDateForGoogleForms = (dateStr: string) => {
-                              if (dateStr.includes('.')) {
-                                const parts = dateStr.split('.');
-                                if (parts.length === 3) {
-                                  const day = parts[0].padStart(2, '0');
-                                  const month = parts[1].padStart(2, '0');
-                                  const year = parts[2];
-                                  return `${year}-${month}-${day}`;
+                              const formatDateForGoogleForms = (dateStr: string) => {
+                                if (dateStr.includes('.')) {
+                                  const parts = dateStr.split('.');
+                                  if (parts.length === 3) {
+                                    const day = parts[0].padStart(2, '0');
+                                    const month = parts[1].padStart(2, '0');
+                                    const year = parts[2];
+                                    return `${year}-${month}-${day}`;
+                                  }
                                 }
-                              }
-                              return dateStr;
-                            };
+                                return dateStr;
+                              };
 
-                            formUrl.searchParams.set('entry.1202411355', event.title);
-                            formUrl.searchParams.set('entry.1310809798', formatDateForGoogleForms(event.date));
-                            formUrl.searchParams.set('entry.1415788207', event.time);
-                            formUrl.searchParams.set('entry.841120111', event.type);
-                            formUrl.searchParams.set('usp', 'pp_url');
+                              formUrl.searchParams.set('entry.1202411355', event.title);
+                              formUrl.searchParams.set('entry.1310809798', formatDateForGoogleForms(event.date));
+                              formUrl.searchParams.set('entry.1415788207', event.time);
+                              formUrl.searchParams.set('entry.841120111', event.type);
+                              formUrl.searchParams.set('usp', 'pp_url');
 
-                            window.open(formUrl.toString(), '_blank');
-                          }}
-                          className={`text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer ${getButtonColor(event.color)}`}
-                        >
-                          {t('register')}
-                        </button>
+                              window.open(formUrl.toString(), '_blank');
+                            }}
+                            className={`text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer ${getButtonColor(event.color)}`}
+                          >
+                            {t('register')}
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>

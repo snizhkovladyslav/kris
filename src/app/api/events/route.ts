@@ -44,7 +44,7 @@ export async function GET(request: Request) {
     // Отримуємо дані з таблиці "events_{locale}"
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId,
-      range: `events_${safeLocale}!A2:H`, // Від рядка 2 до кінця, колонки A-H
+      range: `events_${safeLocale}!A2:I`, // Від рядка 2 до кінця, колонки A-I (added column I for external_url)
     });
 
     const rows = response.data.values || [];
@@ -59,6 +59,7 @@ export async function GET(request: Request) {
       status: row[5] || '',
       color: row[6] || 'orange',
       image: convertGoogleDriveUrl(row[7] || ''),
+      external_url: row[8] || '', // Посилання на сайт партнера (для партнерських подій)
     }));
 
     return NextResponse.json({ events });
@@ -69,4 +70,4 @@ export async function GET(request: Request) {
       { status: 500 }
     );
   }
-} 
+}
